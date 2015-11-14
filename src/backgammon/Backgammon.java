@@ -19,6 +19,6 @@ public class Backgammon {
         
     }
     
-    public void test (){}
+    
     
 }
