@@ -69,23 +69,21 @@ public class BackgammonBoard
                     {
                         return false;
                     }
-                }      
+                }   
+                return true;
             }
             else//dice<position
             {
-                hasEnemyDoor
+                return hasEnemyDoor(calculateMove(position, dice));
             }
             
         }    
-        if  (
-                (!board[position].isEmpty())&&
-                board[position].getLast()==currentPlayer.getId()&&
-                board[position+dice]
-            )
-        {
-            
-           
-        }
+//        if  (
+//                (!board[position].isEmpty())&&
+//                board[position].getLast()==currentPlayer.getId()&&
+//                board[position+dice]
+//            ){}
+
     }
     
     private boolean isPlayerInBearOffPhase()
@@ -148,7 +146,7 @@ public class BackgammonBoard
     
     private int calculateMove(int position, int dice)
     {
-        return position
+        return position+(dice*(currentPlayer.getId()*-2+1));
     }
     
     
