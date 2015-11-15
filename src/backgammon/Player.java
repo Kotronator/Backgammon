@@ -28,4 +28,8 @@ public class Player
         return id;
     }
     
+    public int getNextId()
+    {
+        return (id++)%ID_COUNTER;
+    }
 }

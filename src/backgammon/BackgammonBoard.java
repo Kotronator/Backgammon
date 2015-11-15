@@ -48,8 +48,35 @@ public class BackgammonBoard
 
     private boolean isValidMove(int position, int dice)
     {
-        if()
+        if(isPlayerInBearOffPhase())
+        {
+            if(dice==position)
+                return true;
+            else if (dice>position)
+            {
+                int startPosition=position+1, finishPosition=6;
+                if(currentPlayer.getId()==1)
+                {
+                    startPosition=19;
+                    finishPosition=position-1;
+                }
+                for (int i =startPosition; i <= finishPosition ; i++)
+                {
+                    if(!board[i].isEmpty()){
+                       continue; 
+                    } 
+                    else if(hasPiece(i))
+                    {
+                        return false;
+                    }
+                }      
+            }
+            else//dice<position
+            {
+                hasEnemyDoor
+            }
             
+        }    
         if  (
                 (!board[position].isEmpty())&&
                 board[position].getLast()==currentPlayer.getId()&&
@@ -64,31 +91,64 @@ public class BackgammonBoard
     private boolean isPlayerInBearOffPhase()
     {
         int startPosition=1, finishPosition=18;
-        //int way=1;
+        if(hasPlayerCapturedPiece())
+        {
+            return false;
+        }
+        
         if(currentPlayer.getId()==1)
         {
             startPosition=7;
             finishPosition=24;
         }
-        if(hasPlayerCapturedPiece())
+        
+        for (int i = startPosition; i < finishPosition; i++)
         {
-            return false;
-        }
-        for (int i = startPosition; i < board.length; i++)
-        {
-            LinkedList<Integer> board1 = board[i];
+            if(board[i].isEmpty())
+                continue;
+            else if(hasPiece(i))
+                return false;
             
         }
-   
+        return true;
     }
 
     private boolean hasPlayerCapturedPiece()
+    { 
+       
+        if (board[currentPlayer.getId()*25].isEmpty())
+        {
+           return false;
+        }
+        else if(board[currentPlayer.getId()*25].getLast()==currentPlayer.getId())
+        {
+           return true;
+        }
+        return false;
+ 
+               
+    }
+    private boolean hasPiece(int position)
     {
-//        if (currentPlayer.getId()==0)
-//        {
-//            
-//        }
-        return !board[currentPlayer.getId()*25].isEmpty();
+        
+        return board[position].getFirst()==currentPlayer.getId()||board[position].getLast()==currentPlayer.getId();
+    }
+    
+    private boolean hasEnemyDoor(int position)
+    {
+        if (position==0 || position==25)
+        {
+            return false;
+        }
+        else
+        {
+          return board[position].getLast()==currentPlayer.getNextId()&&board[position].size()>=2;
+        }
+    }
+    
+    private int calculateMove(int position, int dice)
+    {
+        return position
     }
     
     
