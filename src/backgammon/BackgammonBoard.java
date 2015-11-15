@@ -83,7 +83,7 @@ public class BackgammonBoard
 //                board[position].getLast()==currentPlayer.getId()&&
 //                board[position+dice]
 //            ){}
-
+        return false;
     }
     
     private boolean isPlayerInBearOffPhase()
