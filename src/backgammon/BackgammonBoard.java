@@ -42,7 +42,7 @@ public class BackgammonBoard
         {
             int targetPosition=calculateMove(position, dice);
 
-                if (targetPosition==currentPlayer.getNextId()*25)
+                if (targetPosition==currentPlayer.getNextId()*25)//otan mazevw ta dika mou poulia
                 {
                     board[targetPosition].addFirst(currentPlayer.getId());
                     board[position].removeLast();
@@ -50,7 +50,7 @@ public class BackgammonBoard
                 {
                     if (type==PORTES)
                     {
-                        if (board[targetPosition].getLast()==currentPlayer.getNextId())
+                        if (board[targetPosition].getLast()==currentPlayer.getNextId())//trwme pouli
                         {
                             int piece=board[targetPosition].removeLast();
                             board[currentPlayer.getNextId()*25].addLast(piece);
@@ -58,6 +58,8 @@ public class BackgammonBoard
                     }
                     board[targetPosition].addLast(currentPlayer.getId());
                     board[position].removeLast();
+                    
+                    
                 }
            
             return true;
