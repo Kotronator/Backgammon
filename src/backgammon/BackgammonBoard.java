@@ -40,7 +40,26 @@ public class BackgammonBoard
     {
         if(isValidMove(position,dice))
         {
-            //TODO kane move
+            int targetPosition=calculateMove(position, dice);
+
+                if (targetPosition==currentPlayer.getNextId()*25)
+                {
+                    board[targetPosition].addFirst(currentPlayer.getId());
+                    board[position].removeLast();
+                }else
+                {
+                    if (type==PORTES)
+                    {
+                        if (board[targetPosition].getLast()==currentPlayer.getNextId())
+                        {
+                            int piece=board[targetPosition].removeLast();
+                            board[currentPlayer.getNextId()*25].addLast(piece);
+                        }
+                    }
+                    board[targetPosition].addLast(currentPlayer.getId());
+                    board[position].removeLast();
+                }
+           
             return true;
         }
         return false;
@@ -50,9 +69,9 @@ public class BackgammonBoard
     {
         if(isPlayerInBearOffPhase())
         {
-            if(dice==position)
+            if(dice==getBearOffDistanceOfPosition(position))//(currentPlayer.getId()==1&&dice==position)||(currentPlayer.getId()==0 && dice==6-(position % 19)))
                 return true;
-            else if (dice>position)
+            else if (dice>getBearOffDistanceOfPosition(position))
             {
                 int startPosition=position+1, finishPosition=6;
                 if(currentPlayer.getId()==1)
@@ -74,16 +93,38 @@ public class BackgammonBoard
             }
             else//dice<position
             {
-                return hasEnemyDoor(calculateMove(position, dice));
+                return !hasEnemyDoor(calculateMove(position, dice));
             }
             
-        }    
-//        if  (
-//                (!board[position].isEmpty())&&
-//                board[position].getLast()==currentPlayer.getId()&&
-//                board[position+dice]
-//            ){}
-        return false;
+        }else// den eimai se fash mazevw --not bear phase
+        {
+            if((position<=6&&currentPlayer.getId()==1&&dice==position)||(position>=19&&currentPlayer.getId()==0 && dice==6-(position % 19)))//ama paw na pazepsw den epitrpetai
+                return false;//kinhsh mazematos
+            if(hasPlayerCapturedPiece())//exw piasmeno
+            {
+                if(position==25*currentPlayer.getId())// ama eimai 0 pazw apo 0
+                {
+                    return !hasEnemyDoor(calculateMove(position, dice));//TODO
+                }else
+                    return false;
+            }else
+            return !hasEnemyDoor(calculateMove(position, dice));
+        }
+             
+    }
+    
+    private int getBearOffDistanceOfPosition(int position)
+    {
+        if(!isPlayerInBearOffPhase())
+            throw new UnsupportedOperationException("Klish enw den mazevw");
+        if (currentPlayer.getId()==1)
+        {
+            return position;
+        }
+        else
+        {
+            return 6-(position % 19);
+        }
     }
     
     private boolean isPlayerInBearOffPhase()
@@ -146,8 +187,22 @@ public class BackgammonBoard
     
     private int calculateMove(int position, int dice)
     {
-        return position+(dice*(currentPlayer.getId()*-2+1));
+        if(currentPlayer.getId()==0)
+        {
+            position+=dice;
+            if(position>25)
+                position=25;
+            
+        }else
+        {
+            position-=dice;
+            if(position<0)
+                position=0;
+        }
+        return position;//position+(dice*(currentPlayer.getId()*-2+1));
     }
+
+   
     
     
     
