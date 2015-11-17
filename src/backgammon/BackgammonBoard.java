@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class BackgammonBoard 
 {
-    public static LinkedList<Integer>[] board = new LinkedList[26];
+    public LinkedList<Integer>[] board = new LinkedList[26];
     public static int PORTES=0, PLAKOTO=1, ASODIO=3;
     private int type;
     private Player currentPlayer;
@@ -26,6 +26,25 @@ public class BackgammonBoard
            board[i]= new LinkedList<Integer>();
             
         }
+        currentPlayer=PlayerController.getPlayerWithId(0);
+    }
+    public LinkedList<Integer>[] getBoard()
+    {
+        return board;
+    }
+    
+    public BackgammonBoard getCopy()
+    {
+        BackgammonBoard board = new BackgammonBoard();
+        
+        for (int i = 0; i < board.getBoard().length; i++) {
+           board.getBoard()[i]=new LinkedList<Integer>(this.board[i]);
+           board.type=type;
+           board.currentPlayer=PlayerController.getPlayerWithId(this.currentPlayer.getId());
+            
+        }
+        
+        return board;
     }
     
     public void initialiseBoard()

@@ -14,10 +14,14 @@ public class Backgammon {
     /**
      * @param args the command line arguments
      */
+    public static BackgammonBoard backgammon;
+    
     public static void main(String[] args) {
+        PlayerController.addPlayer("Stelios");
+        PlayerController.addPlayer("AI");
         // TODO code application logic here 
-        BackgammonBoard bb= new BackgammonBoard();
-        bb.initialiseBoard();
+        backgammon= new BackgammonBoard();
+        backgammon.initialiseBoard();
         new graphics.BackgammonFrame();
     }
     

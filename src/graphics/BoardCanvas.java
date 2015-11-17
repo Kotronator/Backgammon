@@ -54,16 +54,16 @@ public class BoardCanvas extends java.awt.Canvas
         for (int i = 1; i < 25; i++)
         {
             
-            if(backgammon.BackgammonBoard.board[i].isEmpty())
+            if(backgammon.Backgammon.backgammon.getBoard()[i].isEmpty())
             {
                 continue;
             }
             
             if(i<7)
             {
-                int numOfPiecesInColum=backgammon.BackgammonBoard.board[i].size();
+                int numOfPiecesInColum=backgammon.Backgammon.backgammon.getBoard()[i].size();
                 int j=0;
-                for (Iterator<Integer> it = backgammon.BackgammonBoard.board[i].iterator(); it.hasNext();)
+                for (Iterator<Integer> it = backgammon.Backgammon.backgammon.getBoard()[i].iterator(); it.hasNext();)
                 {
                     
                     Integer pieceId = it.next();
