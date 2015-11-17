@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class BackgammonBoard 
 {
-    LinkedList<Integer>[] board = new LinkedList[26];
+    public static LinkedList<Integer>[] board = new LinkedList[26];
     public static int PORTES=0, PLAKOTO=1, ASODIO=3;
     private int type;
     private Player currentPlayer;
@@ -32,7 +32,11 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
-            //TODO sthsimo
+            board[1].add(0);
+            board[1].add(0);
+            board[2].add(1);
+            board[2].add(0);
+            board[2].add(1);
         }
     }
     

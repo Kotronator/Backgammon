@@ -16,6 +16,8 @@ public class Backgammon {
      */
     public static void main(String[] args) {
         // TODO code application logic here 
+        BackgammonBoard bb= new BackgammonBoard();
+        bb.initialiseBoard();
         new graphics.BackgammonFrame();
     }
     
