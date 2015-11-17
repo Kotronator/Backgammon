@@ -5,6 +5,7 @@
  */
 package backgammon;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -33,6 +34,73 @@ public class BackgammonBoard
         return board;
     }
     
+    public HashSet<BackgammonChild> generateChildren(int dice0, int dice1)
+    {
+        
+        if(dice1>dice0)
+        {
+            int temp=dice0;
+            temp=dice1;
+            dice1=dice0;
+            dice0=temp;
+        }
+        
+        boolean canDouble=false,canSingle=false,canBig=false;
+        BackgammonChild backgammonChild;//= new BackgammonChild(this);
+        for (int i = 0; i < board.length; i++) {
+            
+            backgammonChild= new BackgammonChild(this);
+            
+            if (backgammonChild.board.isValidMove(i, dice0)) 
+            {// mporw n pai3w tn megalh zaria
+                
+                backgammonChild.diceMove.dice[0]=dice0;
+                backgammonChild.diceMove.position[0]=i;
+                backgammonChild.board.doMove(i, dice0);
+                canSingle=true;
+                canBig=true;
+            }
+            else
+            {
+                backgammonChild.diceMove.dice[0]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                backgammonChild.diceMove.position[0]=i;
+                if(canBig)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                {
+                    continue;
+                }
+                
+            }
+  
+            for (int j = 0; j < board.length; j++) {
+                
+                if (backgammonChild.board.isValidMove(j, dice1)) 
+                {// mporw n pai3w tn mikrh zaria
+
+                    backgammonChild.diceMove.dice[1]=dice1;
+                    backgammonChild.diceMove.position[1]=j;
+                    backgammonChild.board.doMove(j, dice1);
+                    if(backgammonChild.diceMove.dice[0]>0)
+                    {
+                        canDouble=true;
+
+                    }
+                    canSingle=true;
+
+                }
+                else
+                {
+                    backgammonChild.diceMove.dice[1]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                    backgammonChild.diceMove.position[1]=j;
+
+
+                }
+            }
+            
+        }
+        
+        return null; //TODO
+    }
+    
     public BackgammonBoard getCopy()
     {
         BackgammonBoard board = new BackgammonBoard();
@@ -56,7 +124,7 @@ public class BackgammonBoard
             board[2].add(1);
             board[2].add(0);
             board[2].add(1);
-        }
+        }//TODO
     }
     
     public boolean doMove(int position,int dice)

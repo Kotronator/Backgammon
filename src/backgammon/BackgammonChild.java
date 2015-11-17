@@ -11,8 +11,14 @@ package backgammon;
  */
 public class BackgammonChild 
 {
-    BackgammonBoard board;
-    DiceMove diceMove;
+    public BackgammonBoard board;
+    public DiceMove diceMove;
+    
+    public BackgammonChild(BackgammonBoard board)
+    {
+        this.board=board.getCopy();
+    }
+    
 
     public class DiceMove
     {
