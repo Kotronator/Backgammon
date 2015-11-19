@@ -58,23 +58,45 @@ public class BoardCanvas extends java.awt.Canvas
             {
                 continue;
             }
-            
+            int x=40,y=30, direction=1, z=i;
             if(i<7)
             {
-                int numOfPiecesInColum=backgammon.Backgammon.backgammon.getBoard()[i].size();
+                x=40;
+                y=30;
+               
+//for (int j = 0; j < numOfPiecesInColum; j++) {
+                
+            }
+            else if(i<13)
+            {
+                x=107;
+                y=30;
+            }
+            
+            else if(i<19)
+            {
+                x=107+55*11;
+                y=520;
+                direction=-1;
+                z=i-12;
+            }
+            else
+            {
+                 x=37+55*11;
+                y=520;
+                direction=-1;
+                z=i-12;
+            }
+            
+            int numOfPiecesInColum=backgammon.Backgammon.backgammon.getBoard()[i].size();
                 int j=0;
                 for (Iterator<Integer> it = backgammon.Backgammon.backgammon.getBoard()[i].iterator(); it.hasNext();)
                 {
                     
                     Integer pieceId = it.next();
-                    grphcs.drawImage(pieceImages[pieceId], 40+(i-1)*55, 30+j*50, 50, 50, this);
+                    grphcs.drawImage(pieceImages[pieceId], x+(z-1)*55*direction, y+j*50*direction, 50, 50, this);
                     j++;
                 }
-//for (int j = 0; j < numOfPiecesInColum; j++) {
-                    
-                
-                
-            }
                 
             
             
