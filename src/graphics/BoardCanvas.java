@@ -63,8 +63,6 @@ public class BoardCanvas extends java.awt.Canvas
             {
                 x=40;
                 y=30;
-               
-//for (int j = 0; j < numOfPiecesInColum; j++) {
                 
             }
             else if(i<13)

@@ -22,6 +22,8 @@ public class BackgammonFrame extends javax.swing.JFrame
         this.setVisible(true);
         canvas1.repaint();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,7 +32,8 @@ public class BackgammonFrame extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jPanel1 = new javax.swing.JPanel();
         canvas1 = new BoardCanvas();
@@ -42,6 +45,7 @@ public class BackgammonFrame extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 653));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 

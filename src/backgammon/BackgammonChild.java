@@ -14,26 +14,64 @@ public class BackgammonChild
     public BackgammonBoard board;
     public DiceMove diceMove;
     
+    
     public BackgammonChild(BackgammonBoard board)
     {
         this.board=board.getCopy();
+        diceMove= new DiceMove();
+        
     }
+    
+    public BackgammonChild(BackgammonChild src)
+    {
+        this.board=src.board.getCopy();
+        diceMove= new DiceMove(src.diceMove);
+        
+    }
+    
     
 
     public class DiceMove
     {
         public static final int DICE_UNCHECKED=-1, DICE_IMPOSSIBLE=0 ;
         
-        int[] dice = new int[2];
-        int[] position = new int[2];
+        int[] dice = new int[4];
+        int[] position = new int[4];
+        int maxPlayed=0;
 
         public DiceMove()
         {
             dice[0]=DICE_UNCHECKED;
             dice[1]=DICE_UNCHECKED;
+            dice[2]=DICE_UNCHECKED;
+            dice[3]=DICE_UNCHECKED;
             position[0]=0;
             position[1]=0;
+            position[2]=0;
+            position[3]=0;
         }
+        
+        public DiceMove(DiceMove src)
+        {
+            for (int i = 0; i < src.dice.length; i++)
+            {
+                dice[i]= src.dice[i];
+                position[i]= src.position[i];
+                
+            }
+            maxPlayed=src.maxPlayed;
+        }
+        
+//        public int getNumOfPlayableDices()
+//        {
+//            int counter
+//            for (int i = 0; i < dice.length; i++)
+//            {
+//                int e = dice[i];
+//                
+//            }
+//        }
+        
         
        
         

@@ -34,9 +34,11 @@ public class BackgammonBoard
         return board;
     }
     
-    public HashSet<BackgammonChild> generateChildren(int dice0, int dice1)
+    public LinkedList<BackgammonChild> generateChildren(int dice0, int dice1)
     {
+        LinkedList<BackgammonChild> childrenList= new LinkedList<>();
         
+        boolean isRollDouble=false;
         if(dice1>dice0)
         {
             int temp=dice0;
@@ -44,62 +46,201 @@ public class BackgammonBoard
             dice1=dice0;
             dice0=temp;
         }
-        
+        else if(dice0==dice1)
+        {
+            isRollDouble=true;
+        }
+        int maxDiceDoublesPlayed=0;//needed for double roll
         boolean canDouble=false,canSingle=false,canBig=false;
         BackgammonChild backgammonChild;//= new BackgammonChild(this);
-        for (int i = 0; i < board.length; i++) {
-            
-            backgammonChild= new BackgammonChild(this);
-            
-            if (backgammonChild.board.isValidMove(i, dice0)) 
-            {// mporw n pai3w tn megalh zaria
-                
-                backgammonChild.diceMove.dice[0]=dice0;
-                backgammonChild.diceMove.position[0]=i;
-                backgammonChild.board.doMove(i, dice0);
-                canSingle=true;
-                canBig=true;
-            }
-            else
-            {
-                backgammonChild.diceMove.dice[0]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
-                backgammonChild.diceMove.position[0]=i;
-                if(canBig)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
-                {
-                    continue;
-                }
-                
-            }
-  
-            for (int j = 0; j < board.length; j++) {
-                
-                if (backgammonChild.board.isValidMove(j, dice1)) 
-                {// mporw n pai3w tn mikrh zaria
+        if(!isRollDouble)
+        {
+            for (int i = 0; i < board.length; i++) {
 
-                    backgammonChild.diceMove.dice[1]=dice1;
-                    backgammonChild.diceMove.position[1]=j;
-                    backgammonChild.board.doMove(j, dice1);
-                    if(backgammonChild.diceMove.dice[0]>0)
-                    {
-                        canDouble=true;
+                 backgammonChild= new BackgammonChild(this);
 
-                    }
+                if (backgammonChild.board.isValidMove(i, dice0)) 
+                {// mporw n pai3w tn megalh zaria
+
+                    backgammonChild.diceMove.dice[0]=dice0;
+                    backgammonChild.diceMove.position[0]=i;
+                    backgammonChild.board.doMove(i, dice0);
                     canSingle=true;
-
+                    canBig=true;
                 }
                 else
                 {
-                    backgammonChild.diceMove.dice[1]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
-                    backgammonChild.diceMove.position[1]=j;
-
+                    backgammonChild.diceMove.dice[0]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                    backgammonChild.diceMove.position[0]=i;
+                    if(canBig)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                    {
+                        continue;
+                    }
 
                 }
+
+                for (int j = 0; j < board.length; j++) 
+                {
+                       BackgammonChild finalChild= new BackgammonChild(backgammonChild);
+                    if (finalChild.board.isValidMove(j, dice1)) 
+                    {// mporw n pai3w tn mikrh zaria
+
+                        finalChild.diceMove.dice[1]=dice1;
+                        finalChild.diceMove.position[1]=j;
+                        finalChild.board.doMove(j, dice1);
+                        if(finalChild.diceMove.dice[0]>0)
+                        {
+                            canDouble=true;
+
+                        }
+                        canSingle=true;
+
+                    }
+                    else
+                    {
+                        finalChild.diceMove.dice[1]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                        finalChild.diceMove.position[1]=j;
+
+
+                    }
+                    if(finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE
+                            &&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
+                    {
+                        childrenList.add(finalChild);
+                    }
+
+                }
+
             }
-            
+        }else //double roll
+        {
+
+            for (int i = 0; i < board.length; i++)// 1h apo tis 4
+            {
+
+                backgammonChild= new BackgammonChild(this);
+                //int flagMaxDicePlayed=0;
+                if (backgammonChild.board.isValidMove(i, dice0)) 
+                {// mporw n pai3w tn megalh zaria
+                    //flagMaxDicePlayed++;
+                    backgammonChild.diceMove.maxPlayed++;
+                    backgammonChild.diceMove.dice[0]=dice0;
+                    backgammonChild.diceMove.position[0]=i;
+                    backgammonChild.board.doMove(i, dice0);
+                    if(maxDiceDoublesPlayed<2)
+                        maxDiceDoublesPlayed=1;
+                }
+                else
+                {
+                    backgammonChild.diceMove.dice[0]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                    backgammonChild.diceMove.position[0]=i;
+                    if(maxDiceDoublesPlayed==4)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                    {
+                        continue;
+                    }
+
+                }
+                
+                for (int j = 0; j < board.length; j++)/////////----------------------------2h apo 4
+                {
+                    //LinkedList<Integer> board1 = board[j];
+                    if (backgammonChild.board.isValidMove(j, dice0))
+                    {
+                        backgammonChild.diceMove.maxPlayed++;
+                        backgammonChild.diceMove.dice[1]=dice0;
+                        backgammonChild.diceMove.position[1]=j;
+                        backgammonChild.board.doMove(j, dice0);
+                        if(maxDiceDoublesPlayed<3&& backgammonChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
+                            maxDiceDoublesPlayed=2;
+                    }
+                     else
+                    {
+                        backgammonChild.diceMove.dice[1]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                        backgammonChild.diceMove.position[1]=j;
+                        if(maxDiceDoublesPlayed> backgammonChild.diceMove.maxPlayed)//(maxDiceDoublesPlayed==4||(maxDiceDoublesPlayed==3&&backgammonChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE))//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                        {
+                            continue;
+                        }
+                        
+
+                    }
+                    //---------3o for
+                    for (int k = 0; k < board.length; k++)/////////----------------------------
+                    {
+                        //LinkedList<Integer> board1 = board[j];
+                        if (backgammonChild.board.isValidMove(k, dice0))
+                        {
+                            backgammonChild.diceMove.maxPlayed++;
+                            backgammonChild.diceMove.dice[2]=dice0;
+                            backgammonChild.diceMove.position[2]=k;
+                            backgammonChild.board.doMove(k, dice0);
+                            if(maxDiceDoublesPlayed<4 && backgammonChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE && backgammonChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
+                                maxDiceDoublesPlayed=3;
+                        }
+                         else
+                        {
+                            backgammonChild.diceMove.dice[2]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                            backgammonChild.diceMove.position[2]=k;
+                            if(//maxDiceDoublesPlayed==4
+                                    maxDiceDoublesPlayed> backgammonChild.diceMove.maxPlayed)
+                                    //||(maxDiceDoublesPlayed==3&&backgammonChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE))//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                            {
+                                continue;
+                            }
+
+
+                        }
+                        // --- 4o for
+                        for (int w = 0; w < board.length; w++)/////////----------------------------
+                        {
+                            //LinkedList<Integer> board1 = board[j];
+                            if (backgammonChild.board.isValidMove(w, dice0))
+                            {
+                                backgammonChild.diceMove.maxPlayed++;
+                                backgammonChild.diceMove.dice[3]=dice0;
+                                backgammonChild.diceMove.position[3]=w;
+                                backgammonChild.board.doMove(w, dice0);
+                                if(backgammonChild.diceMove.maxPlayed==4)//(maxDiceDoublesPlayed<4 && backgammonChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE && backgammonChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
+                                    maxDiceDoublesPlayed=4;
+                            }
+                             else
+                            {
+                                backgammonChild.diceMove.dice[3]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                                backgammonChild.diceMove.position[3]=w;
+                                if(//maxDiceDoublesPlayed==4
+                                        maxDiceDoublesPlayed> backgammonChild.diceMove.maxPlayed)
+                                        //||(maxDiceDoublesPlayed==3&&backgammonChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE))//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                                {
+                                    continue;
+                                }
+                                
+
+                            }
+                            
+                            //vale paidi
+                            childrenList.add(backgammonChild);
+                        }
+                        
+                        // --- 4o for end
+                    }
+                    //---------3o for end
+
+                }
+                
+            }
+
         }
         
-        return null; //TODO
+        return childrenList; //TODO
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        throw new UnsupportedOperationException("Not Implemented");
+    }
+    
+    
     
     public BackgammonBoard getCopy()
     {
@@ -121,18 +262,17 @@ public class BackgammonBoard
         {
             board[1].add(0);
             board[1].add(0);
-            board[2].add(1);
-            board[2].add(0);
-            board[2].add(1);
-            for (int i = 7; i <13; i++) {
-                board[i].add(1);
-                
-            }
-            
-            for (int i = 13; i <25; i++) {
-                board[i].add(i%2);
-                
-            }
+//            board[2].add(1);
+//            board[2].add(1);
+//            for (int i = 7; i <13; i++) {
+//                board[i].add(1);
+//                
+//            }
+//            
+//            for (int i = 13; i <25; i++) {
+//                board[i].add(i%2);
+//                
+//            }
         }//TODO
     }
     
@@ -150,8 +290,11 @@ public class BackgammonBoard
                 {
                     if (type==PORTES)
                     {
-                        if (board[targetPosition].getLast()==currentPlayer.getNextId())//trwme pouli
+                        //debug
+                        System.out.println("Parth porta kai fige");
+                        if ((!board[targetPosition].isEmpty())&&board[targetPosition].getLast()==currentPlayer.getNextId())//trwme pouli
                         {
+                            System.out.println("to faga");
                             int piece=board[targetPosition].removeLast();
                             board[currentPlayer.getNextId()*25].addLast(piece);
                         }
@@ -169,6 +312,10 @@ public class BackgammonBoard
 
     private boolean isValidMove(int position, int dice)
     {
+        if(!hasPiece(position))
+        {
+            return false;
+        }
         if(isPlayerInBearOffPhase())
         {
             if(dice==getBearOffDistanceOfPosition(position))//(currentPlayer.getId()==1&&dice==position)||(currentPlayer.getId()==0 && dice==6-(position % 19)))
@@ -256,7 +403,12 @@ public class BackgammonBoard
 
     private boolean hasPlayerCapturedPiece()
     { 
-       
+       //debug
+//        if(currentPlayer.getId()*25==1)
+//        {
+//            System.out.println(currentPlayer.name+currentPlayer.getId());
+//        }
+        //debug
         if (board[currentPlayer.getId()*25].isEmpty())
         {
            return false;
@@ -272,7 +424,7 @@ public class BackgammonBoard
     private boolean hasPiece(int position)
     {
         
-        return board[position].getFirst()==currentPlayer.getId()||board[position].getLast()==currentPlayer.getId();
+        return (!board[position].isEmpty())&&(board[position].getFirst()==currentPlayer.getId()||board[position].getLast()==currentPlayer.getId());
     }
     
     private boolean hasEnemyDoor(int position)
@@ -283,7 +435,7 @@ public class BackgammonBoard
         }
         else
         {
-          return board[position].getLast()==currentPlayer.getNextId()&&board[position].size()>=2;
+          return (!board[position].isEmpty())&&(board[position].getLast()==currentPlayer.getNextId()&&board[position].size()>=2);
         }
     }
     

@@ -17,7 +17,10 @@ public class PlayerController {
     
     public static void addPlayer(String name)
     {
-        players.add(new Player(name));
+        Player p = new Player(name);
+        //debug
+        //System.out.println(p.getId());
+        players.add(p);
     }
     
     public static Player getPlayerWithId(int id)

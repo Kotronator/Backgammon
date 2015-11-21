@@ -5,6 +5,8 @@
  */
 package backgammon;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author tsipiripo
@@ -22,6 +24,14 @@ public class Backgammon {
         // TODO code application logic here 
         backgammon= new BackgammonBoard();
         backgammon.initialiseBoard();
+        LinkedList<BackgammonChild> childrenList=backgammon.generateChildren(1, 2);
+        System.out.println(childrenList.size());
+        System.out.println("teleiwse to paidi");
+        
+        backgammon=childrenList.get(0).board;
+        new graphics.BackgammonFrame();
+        
+        backgammon=childrenList.get(1).board;
         new graphics.BackgammonFrame();
     }
     

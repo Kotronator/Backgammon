@@ -11,9 +11,9 @@ package backgammon;
  */
 public class Player
 {
-    private static int ID_COUNTER;
+    private static int ID_COUNTER=0;
     
-    private String name;
+    public String name;
     private int id;
 
     public Player(String name)
@@ -30,6 +30,6 @@ public class Player
     
     public int getNextId()
     {
-        return (id++)%ID_COUNTER;
+        return (id+1)%ID_COUNTER;
     }
 }
