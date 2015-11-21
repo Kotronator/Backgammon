@@ -24,15 +24,19 @@ public class Backgammon {
         // TODO code application logic here 
         backgammon= new BackgammonBoard();
         backgammon.initialiseBoard();
-        LinkedList<BackgammonChild> childrenList=backgammon.generateChildren(1, 2);
-        System.out.println(childrenList.size());
-        System.out.println("teleiwse to paidi");
         new graphics.BackgammonFrame(backgammon,"tabli");
+        LinkedList<BackgammonChild> childrenList=backgammon.generateChildren(4, 5);
+        System.out.println("Size"+childrenList.size());
+        System.out.println("teleiwse to paidi");
         
-        new graphics.BackgammonFrame(childrenList.get(0).board,"0");
+        for (int i = 0; i < childrenList.size(); i++)
+        {
+             new graphics.BackgammonFrame(childrenList.get(i).board,i+"");
+        }
         
        
-        new graphics.BackgammonFrame(childrenList.get(1).board,"1");
+        
+ 
     }
     
     

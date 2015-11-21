@@ -264,7 +264,7 @@ public class BackgammonBoard
         if(type==PORTES)
         {
             board[1].add(0);
-            board[1].add(0);
+            board[2].add(0);
 //            board[2].add(1);
 //            board[2].add(1);
 //            for (int i = 7; i <13; i++) {
