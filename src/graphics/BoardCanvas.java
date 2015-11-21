@@ -5,6 +5,7 @@
  */
 package graphics;
 
+import backgammon.BackgammonBoard;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
@@ -30,9 +31,10 @@ public class BoardCanvas extends java.awt.Canvas
     
     Image[] pieceImages= new Image[2];
     
-    
-    BoardCanvas()
+    BackgammonBoard boardToDraw;
+    BoardCanvas(BackgammonBoard board)
     {     
+        boardToDraw=board;
         try {
             boardIcon = new ImageIcon(ImageIO.read(backgammon.FileLoader.loadFile(boardImageFileName)));
             redPiece = new ImageIcon(ImageIO.read(backgammon.FileLoader.loadFile(redPieceImageFileName)));
@@ -54,7 +56,7 @@ public class BoardCanvas extends java.awt.Canvas
         for (int i = 1; i < 25; i++)
         {
             
-            if(backgammon.Backgammon.backgammon.getBoard()[i].isEmpty())
+            if(boardToDraw.getBoard()[i].isEmpty())
             {
                 continue;
             }
@@ -86,9 +88,9 @@ public class BoardCanvas extends java.awt.Canvas
                 z=i-12;
             }
             
-            int numOfPiecesInColum=backgammon.Backgammon.backgammon.getBoard()[i].size();
+            int numOfPiecesInColum=boardToDraw.getBoard()[i].size();
                 int j=0;
-                for (Iterator<Integer> it = backgammon.Backgammon.backgammon.getBoard()[i].iterator(); it.hasNext();)
+                for (Iterator<Integer> it = boardToDraw.getBoard()[i].iterator(); it.hasNext();)
                 {
                     
                     Integer pieceId = it.next();

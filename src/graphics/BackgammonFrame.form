@@ -101,7 +101,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new BoardCanvas();"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new BoardCanvas(boardToDraw);"/>
           </AuxValues>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel3">
