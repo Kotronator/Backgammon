@@ -103,10 +103,15 @@ public class BackgammonBoard
 
 
                     }
-                    if(finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE
-                            &&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
+                    if((canDouble&&finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
+                        ||(!canDouble&&canSingle&&(finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE||finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE))    
+                            
+                            )
                     {
-                        childrenList.add(finalChild);
+                        if (!finalChild.board.equals(backgammonChild.board)) {
+                            childrenList.add(finalChild);
+                        }
+                        
                     }
 
                 }
@@ -240,7 +245,19 @@ public class BackgammonBoard
     @Override
     public boolean equals(Object obj)
     {
-        throw new UnsupportedOperationException("Not Implemented");
+        if( !(obj instanceof BackgammonBoard))
+            return false;
+        if(obj==this)
+            return true;
+        for (int i = 0; i < ((BackgammonBoard)obj).board.length; i++)
+         {
+            if (!((BackgammonBoard)obj).board[i].equals(this.board[i])) 
+            {
+                return false;
+            }
+            
+        }
+        return true;
     }
     
     
@@ -263,8 +280,9 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
-            board[1].add(0);
-            board[2].add(0);
+            initialiseForOnlyBig();
+//            board[1].add(0);
+//            board[2].add(0);
 //            board[2].add(1);
 //            board[2].add(1);
 //            for (int i = 7; i <13; i++) {
@@ -277,6 +295,37 @@ public class BackgammonBoard
 //                
 //            }
         }//TODO
+    }
+    
+    private void initialiseForOnlyBig()
+    {   board[1].add(0);
+        //board[9].add(0);
+         for (int i = 2; i < 4; i++)
+         {
+            board[i].add(1);
+            board[i].add(1);
+        }
+         for (int i = 5; i < 7; i++)
+         {
+            board[i].add(1);
+            board[i].add(1);
+        }
+         for (int i = 8; i < 17; i++)
+         {
+            board[i].add(1);
+            board[i].add(1);
+        }
+//        for (int i = 10; i < 13; i++)
+//          {
+//             board[i].add(1);
+//             board[i].add(1);
+//         }
+//        for (int i = 14; i < 18; i++)
+//          {
+//             board[i].add(1);
+//             board[i].add(1);
+//         }
+        
     }
     
     public boolean doMove(int position,int dice)
