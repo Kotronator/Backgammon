@@ -62,14 +62,31 @@ public class BackgammonChild
             maxPlayed=src.maxPlayed;
         }
         
-//        public int getNumOfPlayableDices()
+        public int getNumOfPlayableDices()
+        {
+            int counter=0;
+            for (int i = 0; i < dice.length; i++)
+            {
+                if(dice[i]>0);
+                    counter++;
+            }
+            return counter;
+        }
+
+//        @Override
+//        public boolean equals(Object obj)
 //        {
-//            int counter
+//            if( !(obj instanceof BackgammonChild))
+//                return false;
+//            if(obj==this)
+//                return true;
 //            for (int i = 0; i < dice.length; i++)
 //            {
-//                int e = dice[i];
+//                if(dice[i]!=((BackgammonChild)obj).diceMove.dice[i]||position[i]!=((BackgammonChild)obj).diceMove.position[i])
+//                    return false;
 //                
 //            }
+//            return board.equals(((BackgammonChild)obj).board);
 //        }
         
         

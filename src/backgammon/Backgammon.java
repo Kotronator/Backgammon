@@ -25,13 +25,13 @@ public class Backgammon {
         backgammon= new BackgammonBoard();
         backgammon.initialiseBoard();
         new graphics.BackgammonFrame(backgammon,"tabli");
-        LinkedList<BackgammonChild> childrenList=backgammon.generateChildren(6, 3);
+        LinkedList<BackgammonChild> childrenList=backgammon.generateChildren(1, 3);
         System.out.println("Size"+childrenList.size());
         System.out.println("teleiwse to paidi");
         
         for (int i = 0; i < childrenList.size(); i++)
         {
-             //new graphics.BackgammonFrame(childrenList.get(i).board,i+"");
+             new graphics.BackgammonFrame(childrenList.get(i).board,i+"");
         }
         
        
