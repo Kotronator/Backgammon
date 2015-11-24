@@ -118,32 +118,35 @@ public class BackgammonBoard
 
 
                     }
-                    for (int k = 1; k < board.length; k++)
+                    if(finalChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                     {
-                         System.out.println("k="+i);
-                           // backgammonChild= new BackgammonChild(this);
+                        for (int k = 1; k < board.length; k++)
+                        {
+                             System.out.println("k="+i);
+                               // backgammonChild= new BackgammonChild(this);
 
-                           if (finalChild.board.isValidMove(k, dice0)) 
-                           {// mporw n pai3w tn megalh zaria
-                               System.out.println("kappa"+k+""+dice0);
-                               finalChild.diceMove.dice[0]=dice0;
-                               finalChild.diceMove.position[0]=k;
-                               finalChild.board.doMove(k, dice0);
-                               canSingle=true;
-                               canBig=true;
-                               break;
-                           }
-                           else
-                           {
-                               finalChild.diceMove.dice[0]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
-                               finalChild.diceMove.position[0]=k;
-                               if(canBig)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                               if (finalChild.board.isValidMove(k, dice0)) 
+                               {// mporw n pai3w tn megalh zaria
+                                   System.out.println("kappa"+k+""+dice0);
+                                   finalChild.diceMove.dice[0]=dice0;
+                                   finalChild.diceMove.position[0]=k;
+                                   finalChild.board.doMove(k, dice0);
+                                   canSingle=true;
+                                   canBig=true;
+                                   break;
+                               }
+                               else
                                {
-                                   continue;
+                                   finalChild.diceMove.dice[0]=BackgammonChild.DiceMove.DICE_IMPOSSIBLE;
+                                   finalChild.diceMove.position[0]=k;
+                                   if(canBig)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
+                                   {
+                                       continue;
+                                   }
+
                                }
 
-                           }
-                        
+                        }
                     }
                     if((canDouble&&finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                         ||(!canDouble&&canSingle&&(finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE||finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE))    
@@ -322,8 +325,8 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
-            //initialiseForOnlyBig();
-            initialiseForOnlySmall();
+            initialiseForOnlyBig();
+            //initialiseForOnlySmall();
 //            board[1].add(0);
 //            board[2].add(0);
 //            board[2].add(1);
