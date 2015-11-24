@@ -358,18 +358,21 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
-            board[18].add(0);
-            initialiseForOnlyBig();
+            //board[18].add(0);
+            //initialiseForOnlyBig();
             //initialiseForOnlySmall();
 //            board[1].add(0);
 //            board[2].add(0);
 //            board[2].add(1);
 //            board[2].add(1);
-//            for (int i = 7; i <13; i++) {
-//                board[i].add(1);
-//                
-//            }
+            for (int i = 1; i <4; i++) {
+                board[i].add(0);
+                
+            }
 //            
+            board[2].add(0);
+            board[4].add(1);
+            board[4].add(1);
 //            for (int i = 13; i <25; i++) {
 //                board[i].add(i%2);
 //                
