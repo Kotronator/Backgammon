@@ -5,6 +5,7 @@
  */
 package backgammon;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -33,10 +34,22 @@ public class BackgammonBoard
     {
         return board;
     }
+
+    @Override
+    public int hashCode() {
+        int hashcode=0;
+        for (int i = 0; i < board.length; i++) {
+            hashcode+=board[i].hashCode();
+            
+        }
+        return hashcode;
+    }
     
-    public LinkedList<BackgammonChild> generateChildren(int dice0, int dice1)
+    
+    
+    public HashSet<BackgammonChild> generateChildren(int dice0, int dice1)
     {
-        LinkedList<BackgammonChild> childrenList= new LinkedList<>();
+        HashSet<BackgammonChild> childrenList= new HashSet<>();
         
         boolean isRollDouble=false;
         if(dice1>dice0)
@@ -118,6 +131,7 @@ public class BackgammonBoard
 
 
                     }
+                    boolean canBigAfterSmall=false;
                     if(finalChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                     {
                         for (int k = 1; k < board.length; k++)
@@ -133,6 +147,9 @@ public class BackgammonBoard
                                    finalChild.board.doMove(k, dice0);
                                    canSingle=true;
                                    canBig=true;
+                                   canBigAfterSmall=true;
+                                   canDouble=true;
+                                   
                                    break;
                                }
                                else
@@ -153,7 +170,7 @@ public class BackgammonBoard
                             
                             )
                     {
-                        //if (!finalChild.board.equals(backgammonChild.board)||finalChild.diceMove.) {
+                        //if (!finalChild.board.equals(backgammonChild.board)){//||finalChild.diceMove.) {
                             childrenList.add(finalChild);
                         //}
                         
@@ -283,6 +300,22 @@ public class BackgammonBoard
             }
 
         }
+        ArrayList<BackgammonChild> childrenToRemove = new ArrayList();
+        if (canDouble) {
+            System.out.println("afairw ta mapa");
+            for (BackgammonChild child : childrenList) {
+                if(child.diceMove.dice[0]<=0||child.diceMove.dice[1]<=0)
+                {
+                    System.err.println(child.diceMove.dice[0]+" "+child.diceMove.dice[1]);
+                    childrenToRemove.add(child);
+                }
+            }
+            while(childrenToRemove.size()>0){
+                childrenList.remove(childrenToRemove.remove(0));
+                
+            }
+            
+        }
         
         return childrenList; //TODO
     }
@@ -325,6 +358,7 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
+            board[18].add(0);
             initialiseForOnlyBig();
             //initialiseForOnlySmall();
 //            board[1].add(0);

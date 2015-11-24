@@ -28,6 +28,27 @@ public class BackgammonChild
         diceMove= new DiceMove(src.diceMove);
         
     }
+
+    @Override
+    public int hashCode() {
+        return board.hashCode();
+    }
+    
+    @Override
+        public boolean equals(Object obj)
+        {
+            if( !(obj instanceof BackgammonChild))
+                return false;
+            if(obj==this)
+                return true;
+//            for (int i = 0; i < dice.length; i++)
+//            {
+//                if(dice[i]!=((BackgammonChild)obj).diceMove.dice[i]||position[i]!=((BackgammonChild)obj).diceMove.position[i])
+//                    return false;
+//                
+//            }
+            return board.equals(((BackgammonChild)obj).board);
+        }
     
     
 
@@ -73,21 +94,7 @@ public class BackgammonChild
             return counter;
         }
 
-//        @Override
-//        public boolean equals(Object obj)
-//        {
-//            if( !(obj instanceof BackgammonChild))
-//                return false;
-//            if(obj==this)
-//                return true;
-//            for (int i = 0; i < dice.length; i++)
-//            {
-//                if(dice[i]!=((BackgammonChild)obj).diceMove.dice[i]||position[i]!=((BackgammonChild)obj).diceMove.position[i])
-//                    return false;
-//                
-//            }
-//            return board.equals(((BackgammonChild)obj).board);
-//        }
+        
         
         
        
