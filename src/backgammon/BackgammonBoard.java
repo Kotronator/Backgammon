@@ -325,6 +325,17 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
+            for (int i = 0; i < 5; i++)
+            {
+                board[0].add(1);
+            }
+            
+            for (int i = 0; i < 5; i++)
+            {
+                board[25].add(0);
+            }
+            
+           
             initialiseForOnlyBig();
             //initialiseForOnlySmall();
 //            board[1].add(0);
@@ -418,6 +429,8 @@ public class BackgammonBoard
         {
             return false;
         }
+        if((currentPlayer.getId()==0&&position==25)||(currentPlayer.getId()==1&&position==0))
+            return false;
         if(isPlayerInBearOffPhase())
         {
             if(dice==getBearOffDistanceOfPosition(position))//(currentPlayer.getId()==1&&dice==position)||(currentPlayer.getId()==0 && dice==6-(position % 19)))
