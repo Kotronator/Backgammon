@@ -92,12 +92,12 @@ public class BackgammonBoard
         {
             for (int i = 25*currentPlayer.getId(); currentPlayer.getId()==0?i<board.length-1:i>0;/*i < board.length;*/ i=backgammonChild.board.getNextPiece(i))
             {
-                System.out.println("i="+i);
+                //System.out.println("i="+i);
                  backgammonChild= new BackgammonChild(this);
 
                 if (backgammonChild.board.isValidMove(i, dice0)) 
                 {// mporw n pai3w tn megalh zaria
-                    System.out.println("hi"+i+""+dice0);
+                    //System.out.println("hi"+i+""+dice0);
                     backgammonChild.diceMove.dice[0]=dice0;
                     backgammonChild.diceMove.position[0]=i;
                     backgammonChild.board.doMove(i, dice0);
@@ -110,14 +110,14 @@ public class BackgammonBoard
                     backgammonChild.diceMove.position[0]=i;
                     if(canBig)//an exdw megalh zaria dn xreiazetai n e3ereunhsw paidia p paizoun me tn mikrh
                     {
-                        ;//continue;
+                        //continue;
                     }
 
                 }
                 BackgammonChild finalChild;
                 for (int j = 25*currentPlayer.getId(); currentPlayer.getId()==0?j<board.length-1:j>0; j=finalChild.board.getNextPiece(j)) 
                 {
-                    System.out.println("j="+j);
+                    //System.out.println("j="+j);
                         finalChild= new BackgammonChild(backgammonChild);
                     if (finalChild.board.isValidMove(j, dice1)) 
                     {// mporw n pai3w tn mikrh zaria
@@ -125,7 +125,7 @@ public class BackgammonBoard
                         finalChild.diceMove.dice[1]=dice1;
                         finalChild.diceMove.position[1]=j;
                         finalChild.board.doMove(j, dice1);
-                        System.out.println("paizw"+i+"+"+j+finalChild.diceMove.dice[0]+finalChild.diceMove.dice[1]);
+                        //System.out.println("paizw"+i+"+"+j+finalChild.diceMove.dice[0]+finalChild.diceMove.dice[1]);
                         if(finalChild.diceMove.dice[0]>0)
                         {
                             canDouble=true;
@@ -148,12 +148,12 @@ public class BackgammonBoard
                         for (int k = 25*currentPlayer.getId();currentPlayer.getId()==0?k<board.length-1:k>0; k++)
                         {
                             finalChild2 = new BackgammonChild(finalChild);
-                             System.out.println("k="+k);
+                             //System.out.println("k="+k);
                                // backgammonChild= new BackgammonChild(this);
 
                                if (finalChild2.board.isValidMove(k, dice0)) 
                                {// mporw n pai3w tn megalh zaria
-                                   System.out.println("kappa"+k+""+dice0);
+                                   //System.out.println("kappa"+k+""+dice0);
                                    finalChild2.diceMove.dice[0]=dice0;
                                    finalChild2.diceMove.position[0]=k;
                                    finalChild2.board.doMove(k, dice0);
@@ -205,7 +205,7 @@ public class BackgammonBoard
         }else //double roll
         {
 
-            for (int i = 0; i < board.length; i++)// 1h apo tis 4
+            for (int i = 25*currentPlayer.getId(); currentPlayer.getId()==0?i<board.length-1:i>0; i=backgammonChild.board.getNextPiece(i))
             {
 
                 backgammonChild= new BackgammonChild(this);
@@ -230,11 +230,11 @@ public class BackgammonBoard
                     }
 
                 }
-                
-                for (int j = 0; j < board.length; j++)/////////----------------------------2h apo 4
+                BackgammonChild secondChild;
+                for (int j = 25*currentPlayer.getId(); currentPlayer.getId()==0?j<board.length-1:j>0; j=secondChild.board.getNextPiece(j)) /////////----------------------------2h apo 4
                 {
                     //LinkedList<Integer> board1 = board[j];
-                    BackgammonChild secondChild= new BackgammonChild(backgammonChild);
+                    secondChild= new BackgammonChild(backgammonChild);
                     if (secondChild.board.isValidMove(j, dice0))
                     {
                         secondChild.diceMove.maxPlayed++;
@@ -256,9 +256,10 @@ public class BackgammonBoard
 
                     }
                     //---------3o for
-                    for (int k = 0; k < board.length; k++)/////////----------------------------
+                    BackgammonChild thirdChild;
+                    for (int k = 25*currentPlayer.getId();currentPlayer.getId()==0?k<board.length-1:k>0; k=thirdChild.board.getNextPiece(k))/////////----------------------------
                     {
-                        BackgammonChild thirdChild= new BackgammonChild(secondChild);
+                        thirdChild= new BackgammonChild(secondChild);
                         //LinkedList<Integer> board1 = board[j];
                         if (thirdChild.board.isValidMove(k, dice0))
                         {
@@ -283,10 +284,11 @@ public class BackgammonBoard
 
                         }
                         // --- 4o for
-                        for (int w = 0; w < board.length; w++)/////////----------------------------
+                        BackgammonChild finalChild;
+                        for (int w = 25*currentPlayer.getId();currentPlayer.getId()==0?w<board.length-1:w>0; w=thirdChild.board.getNextPiece(w))/////////----------------------------
                         {
                             //LinkedList<Integer> board1 = board[j];
-                            BackgammonChild finalChild= new BackgammonChild(thirdChild);
+                            finalChild= new BackgammonChild(thirdChild);
                             if (finalChild.board.isValidMove(w, dice0))
                             {
                                 finalChild.diceMove.maxPlayed++;
@@ -324,20 +326,36 @@ public class BackgammonBoard
 
         }
         ArrayList<BackgammonChild> childrenToRemove = new ArrayList();
-        if (canDouble) {
-            System.out.println("afairw ta mapa");
-            for (BackgammonChild child : childrenList) {
-                if(child.diceMove.dice[0]<=0||child.diceMove.dice[1]<=0)
-                {
-                    System.err.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
-                    childrenToRemove.add(child);
+        if(!isRollDouble){
+            if (canDouble) {
+                System.out.println("afairw ta mapa");
+                for (BackgammonChild child : childrenList) {
+                    if(child.diceMove.dice[0]<=0||child.diceMove.dice[1]<=0)
+                    {
+                        System.err.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
+                        childrenToRemove.add(child);
+                    }
                 }
+                while(childrenToRemove.size()>0){
+                    childrenList.remove(childrenToRemove.remove(0));
+
+                }
+
             }
-            while(childrenToRemove.size()>0){
-                childrenList.remove(childrenToRemove.remove(0));
-                
-            }
-            
+        }else
+        {
+            System.out.println("afairw ta mapa me dipla");
+                for (BackgammonChild child : childrenList) {
+                    if(child.diceMove.maxPlayed<maxDiceDoublesPlayed)
+                    {
+                        System.out.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
+                        childrenToRemove.add(child);
+                    }
+                }
+                while(childrenToRemove.size()>0){
+                    childrenList.remove(childrenToRemove.remove(0));
+
+                }
         }
         
         return childrenList; //TODO
@@ -468,10 +486,10 @@ public class BackgammonBoard
                     if (type==PORTES)
                     {
                         //debug
-                        System.out.println("Parth porta kai fige");
+                        //System.out.println("Parth porta kai fige");
                         if ((!board[targetPosition].isEmpty())&&board[targetPosition].getLast()==currentPlayer.getNextId())//trwme pouli
                         {
-                            System.out.println("to faga");
+                            //System.out.println("to faga");
                             int piece=board[targetPosition].removeLast();
                             board[currentPlayer.getNextId()*25].addLast(piece);
                         }

@@ -27,17 +27,26 @@ public class Backgammon {
         backgammon.initialiseBoard();
         new graphics.BackgammonFrame(backgammon,"tabli");
         //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
-        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(6, 1);
+        long start= System.currentTimeMillis();
+        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(2, 2);
+        long end= System.currentTimeMillis();
+        System.out.println("time:"+(end-start));
         System.out.println("Size"+childrenList.size());
-        System.out.println("teleiwse to paidi");
+        
         int i=0;
         for (BackgammonChild childrenList1 : childrenList) {
+            try {
+                Thread.sleep(15);                 //1000 milliseconds is one second.
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
             new graphics.BackgammonFrame(childrenList1.board,i+
                      " dice:"+childrenList1.diceMove.dice[0]+"from"+childrenList1.diceMove.position[0]+" & "+
                      " dice:"+childrenList1.diceMove.dice[1]+"from"+childrenList1.diceMove.position[1]);
             i++;
             //System.out.println("poulia"+childrenList1.board.board[25].size());
         }
+        System.out.println("Afta einai");
        
 //        {
 //             new graphics.BackgammonFrame(childrenList.get(i).board,i+
