@@ -332,7 +332,7 @@ public class BackgammonBoard
                 for (BackgammonChild child : childrenList) {
                     if(child.diceMove.dice[0]<=0||child.diceMove.dice[1]<=0)
                     {
-                        System.err.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
+                        //System.err.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
                         childrenToRemove.add(child);
                     }
                 }
@@ -348,7 +348,7 @@ public class BackgammonBoard
                 for (BackgammonChild child : childrenList) {
                     if(child.diceMove.maxPlayed<maxDiceDoublesPlayed)
                     {
-                        System.out.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
+                        //System.out.println(child.diceMove.dice[0]+" "+child.diceMove.position[0]+":"+child.diceMove.dice[1]+" "+child.diceMove.position[1]);
                         childrenToRemove.add(child);
                     }
                 }
@@ -412,8 +412,11 @@ public class BackgammonBoard
            
             //initialiseForOnlyBig();
             board[0].addLast(0);
-            board[6].addLast(1);
+            board[6+4].addLast(1);
+            board[6+4].addLast(1);
             board[13].addLast(0);
+            board[13+4].addLast(1);
+            board[13+4].addLast(1);
             board[25].addLast(1);
             board[12].addLast(1);
             //initialiseForOnlySmall();
