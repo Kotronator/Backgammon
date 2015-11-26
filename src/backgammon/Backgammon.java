@@ -23,7 +23,7 @@ public class Backgammon {
         PlayerController.addPlayer("Stelios");
         PlayerController.addPlayer("AI");
         // TODO code application logic here 
-        backgammon= new BackgammonBoard();
+        backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
         new graphics.BackgammonFrame(backgammon,"tabli");
         //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
@@ -36,7 +36,7 @@ public class Backgammon {
                      " dice:"+childrenList1.diceMove.dice[0]+"from"+childrenList1.diceMove.position[0]+" & "+
                      " dice:"+childrenList1.diceMove.dice[1]+"from"+childrenList1.diceMove.position[1]);
             i++;
-            System.out.println("poulia"+childrenList1.board.board[25].size());
+            //System.out.println("poulia"+childrenList1.board.board[25].size());
         }
        
 //        {
