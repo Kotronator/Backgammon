@@ -6,6 +6,8 @@
 package graphics;
 
 import backgammon.BackgammonBoard;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.IOException;
@@ -52,6 +54,35 @@ public class BoardCanvas extends java.awt.Canvas
     public void paint(Graphics grphcs) {
         
         grphcs.drawImage(boardIcon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
+        //grphcs.setColor(Color.red);
+        grphcs.setFont(new Font(Font.SERIF, Font.BOLD, 30));
+        //grphcs.drawString("TO SCORE DEN METRAEI", 200, 200);
+        //System.out.println(this.getHeight());
+        if (!boardToDraw.board[0].isEmpty()&& boardToDraw.board[0].getLast()==0)
+        {
+            int i=0,num=0;
+            while (boardToDraw.board[0].get(boardToDraw.board[0].size()-1-i)==0)
+            {                
+                num+=1;
+                i++;
+            }
+            grphcs.drawImage(redPiece.getImage(), 375, 175, 50, 50, this);
+            grphcs.setColor(Color.BLACK);
+            grphcs.drawString(num+"", 385, 207);
+        }
+        
+        if (!boardToDraw.board[25].isEmpty()&& boardToDraw.board[25].getLast()==1)
+        {
+            int i=0,num=0;
+            while (boardToDraw.board[25].get(boardToDraw.board[25].size()-1-i)==1)
+            {                
+                num+=1;
+                i++;
+            }
+            grphcs.drawImage(greenPiece.getImage(), 375, 180+200, 50, 50, this);
+            grphcs.setColor(Color.WHITE);
+            grphcs.drawString(num+"", 385, 207+205);
+        }
         
         for (int i = 1; i < 25; i++)
         {

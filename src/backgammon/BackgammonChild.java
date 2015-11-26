@@ -66,10 +66,10 @@ public class BackgammonChild
             dice[1]=DICE_UNCHECKED;
             dice[2]=DICE_UNCHECKED;
             dice[3]=DICE_UNCHECKED;
-            position[0]=0;
-            position[1]=0;
-            position[2]=0;
-            position[3]=0;
+            position[0]=-1;
+            position[1]=-1;
+            position[2]=-1;
+            position[3]=-1;
         }
         
         public DiceMove(DiceMove src)

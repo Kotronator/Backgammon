@@ -81,7 +81,7 @@ public class BackgammonBoard
         BackgammonChild backgammonChild;//= new BackgammonChild(this);
         if(!isRollDouble)
         {
-            for (int i = 1; i < board.length; i=backgammonChild.board.getNextPiece(i))
+            for (int i = 0; i < board.length; i=backgammonChild.board.getNextPiece(i))
             {
                 System.out.println("i="+i);
                  backgammonChild= new BackgammonChild(this);
@@ -106,7 +106,7 @@ public class BackgammonBoard
 
                 }
 
-                for (int j = 1; j < board.length; j=backgammonChild.board.getNextPiece(j)) 
+                for (int j = 0; j < board.length; j=backgammonChild.board.getNextPiece(j)) 
                 {
                     System.out.println("j="+j);
                        BackgammonChild finalChild= new BackgammonChild(backgammonChild);
@@ -134,7 +134,7 @@ public class BackgammonBoard
                     boolean canBigAfterSmall=false;
                     if(finalChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                     {
-                        for (int k = 1; k < board.length; k++)
+                        for (int k = 0; k < board.length; k++)
                         {
                              System.out.println("k="+i);
                                // backgammonChild= new BackgammonChild(this);
@@ -370,19 +370,22 @@ public class BackgammonBoard
             
            
             initialiseForOnlyBig();
+            board[0].addLast(0);
+            board[0].addLast(0);
+            board[25].addLast(1);
             //initialiseForOnlySmall();
 //            board[1].add(0);
 //            board[2].add(0);
 //            board[2].add(1);
 //            board[2].add(1);
-            for (int i = 1; i <4; i++) {
-                board[i].add(0);
-                
-            }
-//            
-            board[2].add(0);
-            board[4].add(1);
-            board[4].add(1);
+//            for (int i = 1; i <4; i++) {
+//                board[i].add(0);
+//                
+//            }
+////            
+//            board[2].add(0);
+//            board[4].add(1);
+//            board[4].add(1);
 //            for (int i = 13; i <25; i++) {
 //                board[i].add(i%2);
 //                
@@ -467,6 +470,7 @@ public class BackgammonBoard
         }
         if((currentPlayer.getId()==0&&position==25)||(currentPlayer.getId()==1&&position==0))
             return false;
+        
         if(isPlayerInBearOffPhase())
         {
             if(dice==getBearOffDistanceOfPosition(position))//(currentPlayer.getId()==1&&dice==position)||(currentPlayer.getId()==0 && dice==6-(position % 19)))
@@ -623,7 +627,7 @@ public class BackgammonBoard
         //else
             if (currentPlayer.getId()==0)
             {
-                for (int j = i+1; j < 26; j++)
+                for (int j = i+1; j < 25; j++)
                 {
                     if (hasPiece(j))
                     {

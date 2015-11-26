@@ -26,7 +26,8 @@ public class Backgammon {
         backgammon= new BackgammonBoard();
         backgammon.initialiseBoard();
         new graphics.BackgammonFrame(backgammon,"tabli");
-        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(1, 3);
+        //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
+        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(6, 1);
         System.out.println("Size"+childrenList.size());
         System.out.println("teleiwse to paidi");
         int i=0;
@@ -35,7 +36,9 @@ public class Backgammon {
                      " dice:"+childrenList1.diceMove.dice[0]+"from"+childrenList1.diceMove.position[0]+" & "+
                      " dice:"+childrenList1.diceMove.dice[1]+"from"+childrenList1.diceMove.position[1]);
             i++;
+            System.out.println("poulia"+childrenList1.board.board[25].size());
         }
+       
 //        {
 //             new graphics.BackgammonFrame(childrenList.get(i).board,i+
 //                     " dice:"+childrenList.get(i).diceMove.dice[0]+"from"+childrenList.get(i).diceMove.position[0]+" & "+
