@@ -18,7 +18,8 @@ public class BackgammonBoard
     public LinkedList<Integer>[] board = new LinkedList[26];
     public static int PORTES=0, PLAKOTO=1, ASODIO=3;
     private int type;
-    private Player currentPlayer;
+    public Player currentPlayer;
+    public Move lastMovePlayed= new Move(null, 0);
 
     public BackgammonBoard(Player currentPlayer)
     {
@@ -101,6 +102,7 @@ public class BackgammonBoard
                     backgammonChild.diceMove.dice[0]=dice0;
                     backgammonChild.diceMove.position[0]=i;
                     backgammonChild.board.doMove(i, dice0);
+                    backgammonChild.moveOrder.add(new SingleMove(i, dice0));
                     canSingle=true;
                     canBig=true;
                 }
@@ -126,6 +128,7 @@ public class BackgammonBoard
                         finalChild.diceMove.position[1]=j;
                         finalChild.board.doMove(j, dice1);
                         //System.out.println("paizw"+i+"+"+j+finalChild.diceMove.dice[0]+finalChild.diceMove.dice[1]);
+                        finalChild.moveOrder.add(new SingleMove(j, dice1));
                         if(finalChild.diceMove.dice[0]>0)
                         {
                             canDouble=true;
@@ -161,7 +164,7 @@ public class BackgammonBoard
                                    canBig=true;
                                    canBigAfterSmall=true;
                                    canDouble=true;
-                                   
+                                   finalChild2.moveOrder.add(new SingleMove(k, dice0));
                                    //break;
                                }
                                else
@@ -217,6 +220,7 @@ public class BackgammonBoard
                     backgammonChild.diceMove.dice[0]=dice0;
                     backgammonChild.diceMove.position[0]=i;
                     backgammonChild.board.doMove(i, dice0);
+                    backgammonChild.moveOrder.add(new SingleMove(i, dice0));
                     if(maxDiceDoublesPlayed<2)
                         maxDiceDoublesPlayed=1;
                 }
@@ -241,6 +245,7 @@ public class BackgammonBoard
                         secondChild.diceMove.dice[1]=dice0;
                         secondChild.diceMove.position[1]=j;
                         secondChild.board.doMove(j, dice0);
+                        secondChild.moveOrder.add(new SingleMove(j, dice0));
                         if(maxDiceDoublesPlayed<3&& secondChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                             maxDiceDoublesPlayed=2;
                     }
@@ -267,6 +272,7 @@ public class BackgammonBoard
                             thirdChild.diceMove.dice[2]=dice0;
                             thirdChild.diceMove.position[2]=k;
                             thirdChild.board.doMove(k, dice0);
+                            thirdChild.moveOrder.add(new SingleMove(k, dice0));
                             if(maxDiceDoublesPlayed<4 && thirdChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE && thirdChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                                 maxDiceDoublesPlayed=3;
                         }
@@ -295,6 +301,7 @@ public class BackgammonBoard
                                 finalChild.diceMove.dice[3]=dice0;
                                 finalChild.diceMove.position[3]=w;
                                 finalChild.board.doMove(w, dice0);
+                                finalChild.moveOrder.add(new SingleMove(w, dice0));
                                 if(finalChild.diceMove.maxPlayed==4)//(maxDiceDoublesPlayed<4 && finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE && finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                                     maxDiceDoublesPlayed=4;
                             }
@@ -412,11 +419,12 @@ public class BackgammonBoard
            
             //initialiseForOnlyBig();
             board[0].addLast(0);
+             board[6].addLast(1);
             board[6+4].addLast(1);
             board[6+4].addLast(1);
             board[13].addLast(0);
-            board[13+4].addLast(1);
-            board[13+4].addLast(1);
+//            board[13+4].addLast(1);
+//            board[13+4].addLast(1);
             board[25].addLast(1);
             board[12].addLast(1);
             //initialiseForOnlySmall();
@@ -502,7 +510,7 @@ public class BackgammonBoard
                     
                     
                 }
-           
+            lastMovePlayed.moveOrder.add(new SingleMove(position, dice));
             return true;
         }
         return false;
@@ -692,6 +700,16 @@ public class BackgammonBoard
                 } 
             }
         return currentPlayer.getNextId()*25+1*(currentPlayer.getId()*(-2)+1);
+    }
+
+    boolean isTerminal()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    int evaluate()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    

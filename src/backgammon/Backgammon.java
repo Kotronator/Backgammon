@@ -28,7 +28,7 @@ public class Backgammon {
         new graphics.BackgammonFrame(backgammon,"tabli");
         //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
         long start= System.currentTimeMillis();
-        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(2, 2);
+        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(1, 6);
         long end= System.currentTimeMillis();
         System.out.println("time:"+(end-start));
         System.out.println("Size"+childrenList.size());
@@ -36,13 +36,13 @@ public class Backgammon {
         int i=0;
         for (BackgammonChild childrenList1 : childrenList) {
             try {
-                Thread.sleep(15);                 //1000 milliseconds is one second.
+                Thread.sleep(20);                 //1000 milliseconds is one second.
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
             new graphics.BackgammonFrame(childrenList1.board,i+
-                     " dice:"+childrenList1.diceMove.dice[0]+"from"+childrenList1.diceMove.position[0]+" & "+
-                     " dice:"+childrenList1.diceMove.dice[1]+"from"+childrenList1.diceMove.position[1]);
+                     " dice:"+childrenList1.moveOrder.get(0).dice+"from"+childrenList1.moveOrder.get(0).position+" & "+
+                     " dice:"+childrenList1.moveOrder.get(1).dice+"from"+childrenList1.moveOrder.get(1).position);
             i++;
             //System.out.println("poulia"+childrenList1.board.board[25].size());
         }

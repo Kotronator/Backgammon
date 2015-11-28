@@ -33,4 +33,14 @@ public class PlayerController {
           
     }
     
+    public static Player getPlayerWithName(String str)
+    {
+        for (Player player : players) {
+            if(player.name.equals(str))
+                return player;
+        }
+        throw  new UnsupportedOperationException("den uparxei tetoios paukths");
+          
+    }
+    
 }

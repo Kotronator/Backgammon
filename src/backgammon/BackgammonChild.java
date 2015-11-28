@@ -5,6 +5,9 @@
  */
 package backgammon;
 
+import java.awt.Point;
+import java.util.LinkedList;
+
 /**
  *
  * @author TOSHIBA
@@ -13,7 +16,7 @@ public class BackgammonChild
 {
     public BackgammonBoard board;
     public DiceMove diceMove;
-    
+    LinkedList<SingleMove> moveOrder= new LinkedList<>();
     
     public BackgammonChild(BackgammonBoard board)
     {
@@ -26,6 +29,7 @@ public class BackgammonChild
     {
         this.board=src.board.getCopy();
         diceMove= new DiceMove(src.diceMove);
+        moveOrder= new LinkedList<>(src.moveOrder);
         
     }
 
@@ -58,6 +62,7 @@ public class BackgammonChild
         
         int[] dice = new int[4];
         int[] position = new int[4];
+        
         int maxPlayed=0;
 
         public DiceMove()
