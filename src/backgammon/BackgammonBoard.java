@@ -7,6 +7,7 @@ package backgammon;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -394,10 +395,11 @@ public class BackgammonBoard
         
         for (int i = 0; i < board.getBoard().length; i++) {
            board.getBoard()[i]=new LinkedList<Integer>(this.board[i]);
-           board.type=type;
-           board.currentPlayer=PlayerController.getPlayerWithId(this.currentPlayer.getId());
-            
+              
         }
+        board.type=type;
+        board.currentPlayer=PlayerController.getPlayerWithId(this.currentPlayer.getId());
+        board.lastMovePlayed=new Move(this.lastMovePlayed.moveOrder, this.lastMovePlayed.value);
         
         return board;
     }
@@ -419,7 +421,7 @@ public class BackgammonBoard
            
             //initialiseForOnlyBig();
             board[0].addLast(0);
-             board[6].addLast(1);
+             board[1].addLast(1);
             board[6+4].addLast(1);
             board[6+4].addLast(1);
             board[13].addLast(0);
@@ -644,7 +646,19 @@ public class BackgammonBoard
         }
         else
         {
-          return (!board[position].isEmpty())&&(board[position].getLast()==currentPlayer.getNextId()&&board[position].size()>=2);
+            return (!board[position].isEmpty())&&(board[position].getLast()==currentPlayer.getNextId()&&board[position].size()>=2);
+        }
+    }
+    
+    private boolean hasDoor(int position)
+    {
+        if (position==0 || position==25)
+        {
+            return false;
+        }
+        else
+        {
+            return (!board[position].isEmpty())&&(board[position].getLast()==currentPlayer.getId()&&board[position].size()>=2);
         }
     }
     
@@ -704,12 +718,67 @@ public class BackgammonBoard
 
     boolean isTerminal()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (board[0].isEmpty()||board[25].isEmpty())
+        {
+            return false;
+        }
+        int greenCounter=0;
+        int redCounter=0;
+        for (Iterator<Integer> iterator = board[0].iterator(); iterator.hasNext();)
+        {
+            int piece=iterator.next();
+            if(piece==1)
+                greenCounter++;
+            else
+                break;
+            
+        }
+        for (Iterator<Integer> iterator = board[25].iterator(); iterator.hasNext();)
+        {
+            int piece=iterator.next();
+            if(piece==1)
+                redCounter++;
+            else
+                break;
+            
+        }
+        if(redCounter==15||greenCounter==15)
+            return true;
+        
+        return false;
     }
 
-    int evaluate()
+    public int evaluate()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0;
+        for (int i = 1; i < 25; i++)
+        {
+            if(hasEnemyDoor(i))
+                enemyDoor++;
+            if(hasDoor(i))
+                ourDoor++;
+        }
+        if (!board[0].isEmpty()&& board[0].getLast()==0)
+        {
+            int i=0,num=0;
+            while (board[0].get(board[0].size()-1-i)==0)
+            {                
+                ourCaptured+=1;
+                i++;
+            }
+            
+        }
+         if (!board[25].isEmpty()&& board[25].getLast()==1)
+        {
+            int i=0,num=0;
+            while (board[25].get(board[25].size()-1-i)==1)
+            {                
+                enemyCaptured+=1;
+                i++;
+            }
+            
+        }
+        return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
     }
 
    

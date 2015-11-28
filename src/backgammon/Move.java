@@ -19,7 +19,11 @@ public class Move
     public Move(LinkedList<SingleMove> moveOrder, int value)
     {
         this.value=value;
-        this.moveOrder=new LinkedList<>(moveOrder);
+        if (moveOrder!=null)
+        {
+            this.moveOrder=new LinkedList<>(moveOrder);
+        }
+         this.moveOrder=new LinkedList<>();
     }
      
 }

@@ -21,4 +21,12 @@ class SingleMove
         this.position=position;
         this.dice=dice;
     }
+
+    @Override
+    public String toString()
+    {
+        return "pos:"+position+" dice:"+dice;
+    }
+    
+    
 }

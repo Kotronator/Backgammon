@@ -26,26 +26,30 @@ public class Backgammon {
         backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
         new graphics.BackgammonFrame(backgammon,"tabli");
+       
+        AIPlayer.Roll roll = new AIPlayer.Roll(1,6);
+        Move move=AIPlayer.miniMax(backgammon, 1, roll);
+        System.out.println("Should Play:"+"pos:"+move.moveOrder.get(0).position+" dice:"+move.moveOrder.get(0).dice+"pos:"+move.moveOrder.get(1).position+" dice:"+move.moveOrder.get(1).dice);
         //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
-        long start= System.currentTimeMillis();
-        HashSet<BackgammonChild> childrenList=backgammon.generateChildren(1, 6);
-        long end= System.currentTimeMillis();
-        System.out.println("time:"+(end-start));
-        System.out.println("Size"+childrenList.size());
+        //long start= System.currentTimeMillis();
+        //HashSet<BackgammonChild> childrenList=backgammon.generateChildren(1, 6);
+        //long end= System.currentTimeMillis();
+        //System.out.println("time:"+(end-start));
+        //System.out.println("Size"+childrenList.size());
         
-        int i=0;
-        for (BackgammonChild childrenList1 : childrenList) {
-            try {
-                Thread.sleep(20);                 //1000 milliseconds is one second.
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-            new graphics.BackgammonFrame(childrenList1.board,i+
-                     " dice:"+childrenList1.moveOrder.get(0).dice+"from"+childrenList1.moveOrder.get(0).position+" & "+
-                     " dice:"+childrenList1.moveOrder.get(1).dice+"from"+childrenList1.moveOrder.get(1).position);
-            i++;
-            //System.out.println("poulia"+childrenList1.board.board[25].size());
-        }
+//        int i=0;
+//        for (BackgammonChild childrenList1 : childrenList) {
+//            try {
+//                Thread.sleep(20);                 //1000 milliseconds is one second.
+//            } catch(InterruptedException ex) {
+//                Thread.currentThread().interrupt();
+//            }
+//            new graphics.BackgammonFrame(childrenList1.board,i+
+//                     " dice:"+childrenList1.moveOrder.get(0).dice+"from"+childrenList1.moveOrder.get(0).position+" & "+
+//                     " dice:"+childrenList1.moveOrder.get(1).dice+"from"+childrenList1.moveOrder.get(1).position);
+//            i++;
+//            //System.out.println("poulia"+childrenList1.board.board[25].size());
+//        }
         System.out.println("Afta einai");
        
 //        {

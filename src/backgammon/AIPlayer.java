@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class AIPlayer
 {
-    private static int maxDepth;
+    private static int maxDepth=1;
     public static Move miniMax(BackgammonBoard board, int depth, Roll roll)
     {
         
@@ -60,16 +60,33 @@ public class AIPlayer
             for (BackgammonChild child : childs) {
                 
                 //p.second=child.second;
-                child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
-                v=maxMove(v, dice(child, depth-1));
+                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
+                //child.moveOrder.add(new SingleMove(roll.dice0, roll.dice1));
+                v=maxMove(v, dice(child, depth,false));
 
+            }
+        }else
+        {
+             HashSet<BackgammonChild> childs;
+            childs=board.generateChildren(roll.dice0, roll.dice1);
+            v= new Move(null, new Integer(Integer.MAX_VALUE));
+            for (BackgammonChild child : childs) {
+                
+                //p.second=child.second;
+                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
+                //v=minMove(v, dice(child, depth,true));
+                 if (lessMove(dice(child, depth,true),v))
+                {
+                    v=dice(child, depth,true);
+                    v.moveOrder=child.moveOrder;
+                }
             }
         }
         
         return v;
     }
     
-    public static Move dice(BackgammonChild child, int depth)
+    public static Move dice(BackgammonChild child, int depth,boolean maximaze)
     {
         Move v= new Move(null, new Integer(Integer.MIN_VALUE));
         int sum=0;
@@ -78,7 +95,14 @@ public class AIPlayer
                 if(i>=j)
                 {
                     Roll roll = new Roll(i, j);
-                    sum+=min(child.board,  depth,  roll).value*roll.propability;
+                    if(maximaze)//child.board.currentPlayer.getId()==PlayerController.getPlayerWithName("AI").getId())
+                    {
+                        sum+=max(child.board,  depth-1,  roll).value*roll.propability;
+                    }
+                    else
+                    {
+                        sum+=min(child.board,  depth-1,  roll).value*roll.propability;
+                    }
                 }
         if(depth!=maxDepth)
         {
@@ -89,17 +113,93 @@ public class AIPlayer
     
     public static Move min(BackgammonBoard board, int depth, Roll roll)
     {
+        if(depth==0)//||board.isTerminal())
+        {
+            
+            return new Move (board.lastMovePlayed.moveOrder,board.evaluate());
+        }
+        Move v=null;
+        //if(board.currentPlayer.getId()==PlayerController.getPlayerWithName("AI").getId())
+        //{
+            HashSet<BackgammonChild> childs;
+            childs=board.generateChildren(roll.dice0, roll.dice1);
+            v= new Move(null, new Integer(Integer.MAX_VALUE));
+            for (BackgammonChild child : childs) {
+                
+                //p.second=child.second;
+                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
+                v=minMove(v, dice(child, depth,true));
+               
+
+            }
+        //}
+        if(depth!=maxDepth)
+        {
+            v.moveOrder=board.lastMovePlayed.moveOrder;
+        }
         
-        return null;
+        return v;
     }
+    
+    private static Move max(BackgammonBoard board, int depth, Roll roll)
+    {
+         if(depth==0)//||board.isTerminal())
+         {
+            System.out.print(board.lastMovePlayed.moveOrder.size());
+            return new Move (board.lastMovePlayed.moveOrder,board.evaluate());
+         }
+       Move v=null;
+        //if(board.currentPlayer.getId()==PlayerController.getPlayerWithName("AI").getId())
+        {
+            HashSet<BackgammonChild> childs;
+            childs=board.generateChildren(roll.dice0, roll.dice1);
+            v= new Move(null, new Integer(Integer.MIN_VALUE));
+            for (BackgammonChild child : childs) {
+                
+                //p.second=child.second;
+                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
+                v=maxMove(v, dice(child, depth,false));
+
+            }
+        }
+        if(depth!=maxDepth)
+        {
+            v.moveOrder=board.lastMovePlayed.moveOrder;
+        }
+        
+        return v;
+    }
+    
     public static Move maxMove(Move a , Move b)
     {
-        if(a.value>b.value)
+        if(a.value>=b.value)
             return a;
         else return b;
     }
+    
+    public static Move minMove(Move a , Move b)
+    {
+        if(a.value<=b.value)
+            return a;
+        else return b;
+    }
+    
+    public static boolean lessMove(Move a , Move b)
+    {
+        if(a.value<b.value)
+            return true;
+        else return false;
+    }
+    public static boolean greaterMove(Move a , Move b)
+    {
+        if(a.value>b.value)
+            return true;
+        else return false;
+    }
 
-    private static class Roll
+    
+
+    static class Roll
     {
         int dice0;
         int dice1;
