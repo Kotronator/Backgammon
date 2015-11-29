@@ -60,6 +60,7 @@ public class BackgammonBoard
     
     public HashSet<BackgammonChild> generateChildren(int dice0, int dice1)
     {
+        
         HashSet<BackgammonChild> childrenList= new HashSet<>();
         
         boolean isRollDouble=false;
@@ -81,6 +82,7 @@ public class BackgammonBoard
         {
             if(hasPiece(i))
             {
+                
                 firstPiece=i;
                 break;
             }
@@ -94,6 +96,7 @@ public class BackgammonBoard
         {
             for (int i = 25*currentPlayer.getId(); currentPlayer.getId()==0?i<board.length-1:i>0;/*i < board.length;*/ i=backgammonChild.board.getNextPiece(i))
             {
+                
                 //System.out.println("i="+i);
                  backgammonChild= new BackgammonChild(this);
 
@@ -120,6 +123,7 @@ public class BackgammonBoard
                 BackgammonChild finalChild;
                 for (int j = 25*currentPlayer.getId(); currentPlayer.getId()==0?j<board.length-1:j>0; j=finalChild.board.getNextPiece(j)) 
                 {
+                    
                     //System.out.println("j="+j);
                         finalChild= new BackgammonChild(backgammonChild);
                     if (finalChild.board.isValidMove(j, dice1)) 
@@ -149,8 +153,10 @@ public class BackgammonBoard
                     BackgammonChild finalChild2;
                     if(finalChild.diceMove.dice[0]==BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                     {
-                        for (int k = 25*currentPlayer.getId();currentPlayer.getId()==0?k<board.length-1:k>0; k++)
+                        int pid=currentPlayer.getId();
+                        for (int k = 25*pid; pid==0?k<board.length-1:k>0; k=k+(pid*(-2)+1))
                         {
+                            //System.out.println("bla bla kappa kappa kappa"+k);
                             finalChild2 = new BackgammonChild(finalChild);
                              //System.out.println("k="+k);
                                // backgammonChild= new BackgammonChild(this);
@@ -191,6 +197,7 @@ public class BackgammonBoard
                             }
 
                         }
+                        
                     }
                     if((canDouble&&finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE&&finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE)
                         ||(!canDouble&&canSingle&&(finalChild.diceMove.dice[0]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE||finalChild.diceMove.dice[1]!=BackgammonChild.DiceMove.DICE_IMPOSSIBLE))    
@@ -336,7 +343,7 @@ public class BackgammonBoard
         ArrayList<BackgammonChild> childrenToRemove = new ArrayList();
         if(!isRollDouble){
             if (canDouble) {
-                System.out.println("afairw ta mapa");
+                //System.out.println("afairw ta mapa");
                 for (BackgammonChild child : childrenList) {
                     if(child.diceMove.dice[0]<=0||child.diceMove.dice[1]<=0)
                     {
@@ -352,7 +359,7 @@ public class BackgammonBoard
             }
         }else
         {
-            System.out.println("afairw ta mapa me dipla");
+            //System.out.println("afairw ta mapa me dipla");
                 for (BackgammonChild child : childrenList) {
                     if(child.diceMove.maxPlayed<maxDiceDoublesPlayed)
                     {
@@ -408,45 +415,29 @@ public class BackgammonBoard
     {
         if(type==PORTES)
         {
-            for (int i = 0; i < 5; i++)
-            {
-                board[0].add(1);
-            }
-            
-            for (int i = 0; i < 5; i++)
-            {
-                board[25].add(0);
-            }
-            
-           
-            //initialiseForOnlyBig();
-            board[0].addLast(0);
-             board[1].addLast(1);
+            //initialiseForOnlySmall();
+            initialiseShouldDoDoor();
+        }//TODO
+    }
+    
+    private void initialiseShouldEat()//6.1
+    {
+         board[0].addLast(0);
+            board[1].addLast(1);
             board[6+4].addLast(1);
             board[6+4].addLast(1);
             board[13].addLast(0);
-//            board[13+4].addLast(1);
-//            board[13+4].addLast(1);
             board[25].addLast(1);
             board[12].addLast(1);
-            //initialiseForOnlySmall();
-//            board[1].add(0);
-//            board[2].add(0);
-//            board[2].add(1);
-//            board[2].add(1);
-//            for (int i = 1; i <4; i++) {
-//                board[i].add(0);
-//                
-//            }
-////            
-//            board[2].add(0);
-//            board[4].add(1);
-//            board[4].add(1);
-//            for (int i = 13; i <25; i++) {
-//                board[i].add(i%2);
-//                
-//            }
-        }//TODO
+    }
+    
+    private void initialiseShouldDoDoor()//3.1
+    {
+        board[1].add(0);
+        board[3].add(0);
+        board[7].add(0);
+        board[24].add(1);
+        board[22].add(1);
     }
     
     private void initialiseForOnlyBig()//can both ... should big//3.6
@@ -513,6 +504,7 @@ public class BackgammonBoard
                     
                 }
             lastMovePlayed.moveOrder.add(new SingleMove(position, dice));
+            //
             return true;
         }
         return false;
@@ -520,7 +512,7 @@ public class BackgammonBoard
 
     private boolean isValidMove(int position, int dice)
     {
-        if(!hasPiece(position)||position<0||position>25)
+        if(position<0||position>25||!hasPiece(position))
         {
             return false;
         }
@@ -748,8 +740,10 @@ public class BackgammonBoard
         return false;
     }
 
-    public int evaluate()
+    public double evaluate()
     {
+        Player temp=currentPlayer;
+        currentPlayer=PlayerController.getPlayerWithId(1);
         int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0;
         for (int i = 1; i < 25; i++)
         {
@@ -761,7 +755,7 @@ public class BackgammonBoard
         if (!board[0].isEmpty()&& board[0].getLast()==0)
         {
             int i=0,num=0;
-            while (board[0].get(board[0].size()-1-i)==0)
+            while (i-1>0&&board[0].get(board[0].size()-1-i)==0)
             {                
                 ourCaptured+=1;
                 i++;
@@ -771,14 +765,20 @@ public class BackgammonBoard
          if (!board[25].isEmpty()&& board[25].getLast()==1)
         {
             int i=0,num=0;
-            while (board[25].get(board[25].size()-1-i)==1)
+            while (i-1>0&&board[25].get(board[25].size()-1-i)==1)
             {                
                 enemyCaptured+=1;
                 i++;
             }
             
         }
-        return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
+         currentPlayer=temp;
+         if (currentPlayer.getId()==1)
+        {
+            return -enemyDoor;
+        }
+         else return ourDoor;
+        //return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
     }
 
    

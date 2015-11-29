@@ -14,9 +14,9 @@ import java.util.LinkedList;
 public class Move
 {
     LinkedList<SingleMove> moveOrder= new LinkedList<>();
-    int value;
+    double value;
 
-    public Move(LinkedList<SingleMove> moveOrder, int value)
+    public Move(LinkedList<SingleMove> moveOrder, double value)
     {
         this.value=value;
         if (moveOrder!=null)
