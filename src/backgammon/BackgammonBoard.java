@@ -416,7 +416,8 @@ public class BackgammonBoard
         if(type==PORTES)
         {
             //initialiseForOnlySmall();
-            initialiseShouldDoDoor();
+            //initialiseShouldDoDoor();
+            doorsSetup();
         }//TODO
     }
     
@@ -742,8 +743,8 @@ public class BackgammonBoard
 
     public double evaluate()
     {
-        Player temp=currentPlayer;
-        currentPlayer=PlayerController.getPlayerWithId(1);
+        //Player temp=currentPlayer;
+        //currentPlayer=PlayerController.getPlayerWithId(1);
         int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0;
         for (int i = 1; i < 25; i++)
         {
@@ -772,13 +773,48 @@ public class BackgammonBoard
             }
             
         }
-         currentPlayer=temp;
-         if (currentPlayer.getId()==1)
+        // currentPlayer=temp;
+        if (currentPlayer.getId()==0)
         {
-            return -enemyDoor;
+            return -ourDoor+enemyDoor;
         }
-         else return ourDoor;
+         else return ourDoor-enemyDoor;
         //return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
+    }
+
+    private void doorsSetup()
+    {
+        board[1].add(0);
+        board[1].add(0);
+        for (int i = 0; i < 5; i++)
+        {
+            board[6].add(1);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            board[8].add(1);
+        }
+         for (int i = 0; i < 5; i++)
+        {
+            board[12].add(0);
+        }
+          for (int i = 0; i < 5; i++)
+        {
+            board[13].add(1);
+        }
+          for (int i = 0; i < 3; i++)
+        {
+            board[17].add(0);
+        }
+          for (int i = 0; i < 5; i++)
+        {
+            board[19].add(0);
+        }
+        
+          for (int i = 0; i < 2; i++)
+        {
+            board[24].add(1);
+        }
     }
 
    

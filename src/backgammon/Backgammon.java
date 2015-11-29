@@ -23,24 +23,26 @@ public class Backgammon {
         PlayerController.addPlayer("Stelios");
         PlayerController.addPlayer("AI");
         // TODO code application logic here 
-        backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(1));
+        backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
         AIPlayer.maxDepth=3;
         new graphics.BackgammonFrame(backgammon,"tabli");
         int dice0=3, dice1=1;
         boolean showChildren = false;
         AIPlayer.Roll roll = new AIPlayer.Roll(dice0,dice1);
+        float start= System.currentTimeMillis();
         Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
-        System.out.println("Should Play:"+"pos:"+move.moveOrder.get(0).position+" dice:"+move.moveOrder.get(0).dice+"pos:"+move.moveOrder.get(1).position+" dice:"+move.moveOrder.get(1).dice+"V:"+move.value);
+        float end= System.currentTimeMillis();
+        System.out.println("Should Play:"+"(p:"+move.moveOrder.get(0).position+" d:"+move.moveOrder.get(0).dice+")(p:"+move.moveOrder.get(1).position+" d:"+move.moveOrder.get(1).dice+")V:"+move.value);
         //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
         
-        //System.out.println("time:"+(end-start));
+        System.out.println("time:"+((double)(end-start))/1000.0);
         //System.out.println("Size"+childrenList.size());
         
         if(showChildren){
-            long start= System.currentTimeMillis();
+            start= System.currentTimeMillis();
             HashSet<BackgammonChild> childrenList=backgammon.generateChildren(dice0, dice1);
-            long end= System.currentTimeMillis();
+            end= System.currentTimeMillis();
             int i=0;
             for (BackgammonChild childrenList1 : childrenList) {
                 try {

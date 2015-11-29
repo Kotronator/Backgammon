@@ -65,15 +65,15 @@ public class AIPlayer
     static int k=0;
     public static Move dice(BackgammonBoard board, int depth,boolean maximaze)
     {  
-        board.currentPlayer=PlayerController.getPlayerWithId(board.currentPlayer.getNextId());
+       
         if (depth==0)
         { //System.out.println("EDW EDW"+(k++));
             return new Move(null,board.evaluate());
             
         }
        
-        
-        Move v=null;// new Move(null, 0);//megalh patata
+         board.currentPlayer=PlayerController.getPlayerWithId(board.currentPlayer.getNextId());
+        Move v=null;// new Move(null, 0);
         double sum=0;
         
         for (int i = 1; i <= 6; i++)
