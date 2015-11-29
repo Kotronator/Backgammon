@@ -29,6 +29,14 @@ public class BackgammonFrame extends javax.swing.JFrame
         this.setVisible(true);
         canvas1.repaint();
     }
+
+    @Override
+    public void repaint()
+    {
+        super.repaint(); //To change body of generated methods, choose Tools | Templates.
+        canvas1.repaint();
+        canvas2.repaint();
+    }
     
     
 

@@ -69,7 +69,7 @@ public class SideCanvas extends java.awt.Canvas
         if(!board.board[25].isEmpty())
         {
             int i=0;
-            while (i<board.board[0].size()&&board.board[0].get(i)==1)
+            while (i<board.board[25].size()&&board.board[25].get(i)==0)
             {                
                 g.drawImage(redPiece.getImage(), 20, 600-30-i*15, 50, 15, this);
                 i++;

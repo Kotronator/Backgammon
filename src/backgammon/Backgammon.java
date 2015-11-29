@@ -5,8 +5,10 @@
  */
 package backgammon;
 
+import graphics.BackgammonFrame;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  *
@@ -25,15 +27,30 @@ public class Backgammon {
         // TODO code application logic here 
         backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
-        AIPlayer.maxDepth=3;
-        new graphics.BackgammonFrame(backgammon,"tabli");
+        AIPlayer.maxDepth=2;
+        Random r= new Random(System.currentTimeMillis());
+        BackgammonFrame window=new graphics.BackgammonFrame(backgammon,"tabli");
+        while (!backgammon.isTerminal())
+        {
+            AIPlayer.Roll roll = new AIPlayer.Roll(r.nextInt(6)+1,r.nextInt(6)+1);
+            Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
+            backgammon.doMove(move);
+            try {
+                    Thread.sleep(50);                 //1000 milliseconds is one second.
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+            window.repaint();
+            
+        }
+        window.repaint();
         int dice0=3, dice1=1;
         boolean showChildren = false;
         AIPlayer.Roll roll = new AIPlayer.Roll(dice0,dice1);
         float start= System.currentTimeMillis();
-        Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
+        //Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
         float end= System.currentTimeMillis();
-        System.out.println("Should Play:"+"(p:"+move.moveOrder.get(0).position+" d:"+move.moveOrder.get(0).dice+")(p:"+move.moveOrder.get(1).position+" d:"+move.moveOrder.get(1).dice+")V:"+move.value);
+        //System.out.println("Should Play:"+"(p:"+move.moveOrder.get(0).position+" d:"+move.moveOrder.get(0).dice+")(p:"+move.moveOrder.get(1).position+" d:"+move.moveOrder.get(1).dice+")V:"+move.value);
         //new graphics.BackgammonFrame(backgammon.getCopy(), "copia");
         
         System.out.println("time:"+((double)(end-start))/1000.0);

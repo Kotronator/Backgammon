@@ -475,6 +475,19 @@ public class BackgammonBoard
         }
         
     }
+
+    public boolean doMove(Move move)
+    {
+        for (Iterator<SingleMove> iterator = move.moveOrder.iterator(); iterator.hasNext();)
+        {
+            SingleMove next = iterator.next();
+            if(!doMove(next.position,next.dice))
+                throw new UnsupportedOperationException("den ginetai h kinhsh");
+            
+        }
+        currentPlayer=PlayerController.getPlayerWithId(currentPlayer.getNextId());
+        return true;
+    }
     
     public boolean doMove(int position,int dice)
     {
@@ -729,23 +742,21 @@ public class BackgammonBoard
         for (Iterator<Integer> iterator = board[25].iterator(); iterator.hasNext();)
         {
             int piece=iterator.next();
-            if(piece==1)
+            if(piece==0)
                 redCounter++;
             else
                 break;
             
         }
-        if(redCounter==15||greenCounter==15)
-            return true;
         
-        return false;
+        return redCounter==15||greenCounter==15;
     }
 
     public double evaluate()
     {
         //Player temp=currentPlayer;
         //currentPlayer=PlayerController.getPlayerWithId(1);
-        int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0;
+        int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0,ourCollected=0,enemyCollected = 0;
         for (int i = 1; i < 25; i++)
         {
             if(hasEnemyDoor(i))
@@ -753,32 +764,76 @@ public class BackgammonBoard
             if(hasDoor(i))
                 ourDoor++;
         }
-        if (!board[0].isEmpty()&& board[0].getLast()==0)
+        int start,end;
+        if(currentPlayer.getId()==0)
+        {
+            start=0;
+            end=25;
+        }
+        else
+        {
+            start=25;
+            end=0;
+        }
+        if (!board[start].isEmpty()&& board[start].getLast()==currentPlayer.getId())
         {
             int i=0,num=0;
-            while (i-1>0&&board[0].get(board[0].size()-1-i)==0)
+            while (i-1>0&&board[start].get(board[start].size()-1-i)==currentPlayer.getId())
             {                
                 ourCaptured+=1;
                 i++;
             }
             
         }
-         if (!board[25].isEmpty()&& board[25].getLast()==1)
+        if (!board[end].isEmpty()&& board[end].getLast()==currentPlayer.getNextId())
         {
             int i=0,num=0;
-            while (i-1>0&&board[25].get(board[25].size()-1-i)==1)
+            while (i-1>0&&board[end].get(board[end].size()-1-i)==currentPlayer.getNextId())
             {                
                 enemyCaptured+=1;
                 i++;
             }
             
         }
+        
+        if (!board[end].isEmpty()&& board[end].getFirst()==currentPlayer.getId())
+        {
+            
+            for (Iterator<Integer> iterator = board[end].iterator(); iterator.hasNext();)
+            {
+                int piece = iterator.next();
+                if (piece==currentPlayer.getNextId())
+                {
+                    break;
+                }
+                ourCollected++;
+                
+            }
+                        
+        }
+        
+        if (!board[start].isEmpty()&& board[start].getFirst()==currentPlayer.getNextId())
+        {
+            
+            for (Iterator<Integer> iterator = board[start].iterator(); iterator.hasNext();)
+            {
+                int piece = iterator.next();
+                if (piece==currentPlayer.getId())
+                {
+                    break;
+                }
+                enemyCollected++;
+                
+            }
+                        
+        }
+        
         // currentPlayer=temp;
         if (currentPlayer.getId()==0)
         {
-            return -ourDoor+enemyDoor;
+            return -(ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected);
         }
-         else return ourDoor-enemyDoor;
+         else return ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected;
         //return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
     }
 

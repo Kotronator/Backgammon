@@ -22,7 +22,7 @@ public class AIPlayer
         Move v=null;
         if(board.currentPlayer.name.equals("AI"))
         {
-            System.out.println("Minimax Entered Max");
+            //System.out.println("Minimax Entered Max");
             HashSet<BackgammonChild> childs;
             childs=board.generateChildren(roll.dice0, roll.dice1);
             v= new Move(null, Double.NEGATIVE_INFINITY);
@@ -59,7 +59,7 @@ public class AIPlayer
             }
             
         }
-        System.out.println("Minimax Finished");
+        //System.out.println("Minimax Finished");
         return v;
     }
     static int k=0;
