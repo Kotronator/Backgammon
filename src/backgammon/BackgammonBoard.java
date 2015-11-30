@@ -627,12 +627,7 @@ public class BackgammonBoard
 
     private boolean hasPlayerCapturedPiece()
     { 
-       //debug
-//        if(currentPlayer.getId()*25==1)
-//        {
-//            System.out.println(currentPlayer.name+currentPlayer.getId());
-//        }
-        //debug
+
         if (board[currentPlayer.getId()*25].isEmpty())
         {
            return false;
@@ -645,10 +640,35 @@ public class BackgammonBoard
  
                
     }
+    
+    
+    private boolean hasEnemyCapturedPiece()
+    { 
+
+        if (board[currentPlayer.getNextId()*25].isEmpty())
+        {
+           return false;
+        }
+        else if(board[currentPlayer.getNextId()*25].getLast()==currentPlayer.getNextId())
+        {
+           return true;
+        }
+        return false;
+ 
+               
+    }
+    
+    
     private boolean hasPiece(int position)
     {
         
         return (!board[position].isEmpty())&&(board[position].getFirst()==currentPlayer.getId()||board[position].getLast()==currentPlayer.getId());
+    }
+    
+     private boolean hasEnemyPiece(int position)
+    {
+        
+        return (!board[position].isEmpty())&&(board[position].getFirst()==currentPlayer.getNextId()||board[position].getLast()==currentPlayer.getNextId());
     }
     
     private boolean hasEnemyDoor(int position)
@@ -731,7 +751,7 @@ public class BackgammonBoard
 
     boolean isTerminal()
     {
-        if (board[0].isEmpty()||board[25].isEmpty())
+        if (board[0].isEmpty()&&board[25].isEmpty())
         {
             return false;
         }
@@ -764,8 +784,20 @@ public class BackgammonBoard
         //Player temp=currentPlayer;
         //currentPlayer=PlayerController.getPlayerWithId(1);
         int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0,ourCollected=0,enemyCollected = 0;
+        int ourpieceDistance=0, enemyPieceDistance=0;
         for (int i = 1; i < 25; i++)
         {
+            if(hasPiece(i))
+            {
+                if(currentPlayer.getId()==0&&i<=19)
+                {
+                    ourpieceDistance+=18-i;
+                }
+                if(currentPlayer.getId()==1&&i>6)
+                {
+                    enemyPieceDistance+=i-6;
+                }
+            }
             if(hasEnemyDoor(i))
                 enemyDoor++;
             if(hasDoor(i))
@@ -834,13 +866,53 @@ public class BackgammonBoard
             }
                         
         }
+        if (isPlayerInBearOffPhase()) {
+            if (hasEnemyCapturedPiece()) {
+                ourDoor*=2;
+            }
+            if (currentPlayer.getId()==0) {
+                int enemyPiece=7,ourpiece=0;
+                for (int i = 1; i<= 6; i++) 
+                {
+                    if (hasEnemyPiece(6+1-i)) {
+                        enemyPiece=i;
+                    }
+                    if (hasPiece(i)) {
+                        ourpiece=i;
+                    }
+                }
+                if(enemyPiece<ourpiece)
+                    ourDoor*=2;
+                else if(!hasEnemyCapturedPiece())
+                    ourDoor/=2;
+                
+            }else
+            {
+                int enemyPiece=18,ourpiece=25;
+                for (int i = 19; i< 25; i++) 
+                {
+                    if (hasEnemyPiece(i)) {
+                        enemyPiece=i;
+                    }
+                    if (hasPiece(24-i+19)) {
+                        ourpiece=i;
+                    }
+                }
+                if(enemyPiece<ourpiece)
+                    ourDoor*=2;
+                else if(!hasEnemyCapturedPiece())
+                    ourDoor/=2;
+                
+            }
+            
+        }
         
         // currentPlayer=temp;
         if (currentPlayer.getId()==0)
         {
-            return -(ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected);
+            return -(ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected-ourpieceDistance*1.5);
         }
-         else return ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected;
+         else return ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected-ourpieceDistance*1.5;
         //return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
     }
 
