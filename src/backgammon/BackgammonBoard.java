@@ -504,7 +504,7 @@ public class BackgammonBoard
                     if (type==PORTES)
                     {
                         //debug
-                        //System.out.println("Parth porta kai fige");
+                       
                         if ((!board[targetPosition].isEmpty())&&board[targetPosition].getLast()==currentPlayer.getNextId())//trwme pouli
                         {
                             //System.out.println("to faga");
@@ -791,17 +791,24 @@ public class BackgammonBoard
             {
                 if(currentPlayer.getId()==0&&i<=19)
                 {
-                    ourpieceDistance+=18-i;
+                    ourpieceDistance+=(18-i)*2;
                 }
                 if(currentPlayer.getId()==1&&i>6)
                 {
-                    enemyPieceDistance+=i-6;
+                    enemyPieceDistance+=(i-6)*2;
                 }
             }
             if(hasEnemyDoor(i))
                 enemyDoor++;
             if(hasDoor(i))
-                ourDoor++;
+            { 
+                if (i>=16&&currentPlayer.getId()==0)
+                    ourDoor+=3;
+                else if (i<=9&&currentPlayer.getId()==1)
+                    ourDoor+=3;
+                else
+                    ourDoor++;
+            }
         }
         int start,end;
         if(currentPlayer.getId()==0)

@@ -35,8 +35,10 @@ public class BoardCanvas extends java.awt.Canvas
     Image[] pieceImages= new Image[2];
     Image[] dices= new Image[6];
     
-    BackgammonBoard boardToDraw;
+    public  BackgammonBoard boardToDraw;
+    
     private AIPlayer.Roll roll;
+    
     BoardCanvas(BackgammonBoard board, AIPlayer.Roll roll)
     {     
         boardToDraw=board;

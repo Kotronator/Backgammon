@@ -18,7 +18,7 @@ public class BackgammonFrame extends javax.swing.JFrame
     /**
      * Creates new form BackgammonFrame
      */
-    BackgammonBoard boardToDraw;
+    public static BackgammonBoard boardToDraw;
     String frameTitle;
      AIPlayer.Roll roll;
     public BackgammonFrame(BackgammonBoard board, AIPlayer.Roll roll, String title)
@@ -36,6 +36,7 @@ public class BackgammonFrame extends javax.swing.JFrame
     @Override
     public void repaint()
     {
+        ((BoardCanvas)canvas1).boardToDraw=BackgammonFrame.boardToDraw;
         super.repaint(); //To change body of generated methods, choose Tools | Templates.
         canvas1.repaint();
         canvas2.repaint();
