@@ -33,7 +33,7 @@ public class Backgammon {
         // TODO code application logic here 
         backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
-        AIPlayer.maxDepth=1;
+        AIPlayer.maxDepth=2;
         Random r= new Random(System.currentTimeMillis());
         AIPlayer.Roll roll= new AIPlayer.Roll(r.nextInt(6)+1,r.nextInt(6)+1);
         BackgammonFrame window=new graphics.BackgammonFrame(backgammon, roll,"tabli");
