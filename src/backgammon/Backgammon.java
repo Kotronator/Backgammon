@@ -41,76 +41,76 @@ public class Backgammon {
         window.repaint();
         while (!backgammon.isTerminal())
         {
-            if(backgammon.currentPlayer.getId()==0)
-            {
-               
-                if(roll.dice0==roll.dice1){
-                    BackgammonBoard tmp= backgammon.getCopy();
-                    for (int i = 0; i < 4; i++)
-                    {
-                        int pos0 = askPosition(roll.dice0);
-                        
-                        tmp.doMove(pos0, roll.dice0);
-                    }
-                    
-                    HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
-                    HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
-                    for (BackgammonChild x : set1)
-                    {
-                        set.add(x.board);
-                    }
-                    if (set.contains(tmp))
-                    {
-                        System.out.println("\nEkanes thn Tuxh sou");
-                    }else
-                    {
-                        System.out.println("\nTi pas na kaneis");
-                    }
-                    //backgammon.doMove(pos0, roll.dice0);
-                    //backgammon.doMove(pos1, roll.dice1);
-                    //
-                    backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
-                    window.repaint();
-                    
-                    
-                }
-                else
-                {
-                    int dice0=askDice();
-
-                    int pos0 = askPosition(dice0);
-                    int dice1=askDice();
-                    int pos1 = askPosition(dice1);
-                    BackgammonBoard tmp= backgammon.getCopy();
-                    tmp.doMove(pos0, roll.dice0);
-                    tmp.doMove(pos1, roll.dice1);
-                    HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
-                    HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
-                    for (BackgammonChild x : set1)
-                    {
-                        set.add(x.board);
-                    }
-                    if (set.contains(tmp))
-                    {
-                        System.out.println("\nEkanes thn Tuxh sou");
-                    }else
-                    {
-                        System.out.println("\nTi pas na kaneis");
-                    }
-                    backgammon.doMove(pos0, roll.dice0);
-                    backgammon.doMove(pos1, roll.dice1);
-                    backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
-                    window.repaint();
-                   
-                }
-            }
-            roll.dice0=r.nextInt(6)+1;
-            roll.dice1=r.nextInt(6)+1;
+//            if(backgammon.currentPlayer.getId()==0)
+//            {
+//               
+//                if(roll.dice0==roll.dice1){
+//                    BackgammonBoard tmp= backgammon.getCopy();
+//                    for (int i = 0; i < 4; i++)
+//                    {
+//                        int pos0 = askPosition(roll.dice0);
+//                        
+//                        tmp.doMove(pos0, roll.dice0);
+//                    }
+//                    
+//                    HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
+//                    HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
+//                    for (BackgammonChild x : set1)
+//                    {
+//                        set.add(x.board);
+//                    }
+//                    if (set.contains(tmp))
+//                    {
+//                        System.out.println("\nEkanes thn Tuxh sou");
+//                    }else
+//                    {
+//                        System.out.println("\nTi pas na kaneis");
+//                    }
+//                    //backgammon.doMove(pos0, roll.dice0);
+//                    //backgammon.doMove(pos1, roll.dice1);
+//                    //
+//                    backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
+//                    window.repaint();
+//                    
+//                    
+//                }
+//                else
+//                {
+//                    int dice0=askDice();
+//
+//                    int pos0 = askPosition(dice0);
+//                    int dice1=askDice();
+//                    int pos1 = askPosition(dice1);
+//                    BackgammonBoard tmp= backgammon.getCopy();
+//                    tmp.doMove(pos0, roll.dice0);
+//                    tmp.doMove(pos1, roll.dice1);
+//                    HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
+//                    HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
+//                    for (BackgammonChild x : set1)
+//                    {
+//                        set.add(x.board);
+//                    }
+//                    if (set.contains(tmp))
+//                    {
+//                        System.out.println("\nEkanes thn Tuxh sou");
+//                    }else
+//                    {
+//                        System.out.println("\nTi pas na kaneis");
+//                    }
+//                    backgammon.doMove(pos0, roll.dice0);
+//                    backgammon.doMove(pos1, roll.dice1);
+//                    backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
+//                    window.repaint();
+//                   
+//                }
+//            }
+//            roll.dice0=r.nextInt(6)+1;
+//            roll.dice1=r.nextInt(6)+1;
             Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
             backgammon.doMove(move);
             window.repaint();
             try {
-                    Thread.sleep(100);                 //1000 milliseconds is one second.
+                    Thread.sleep(200);                 //1000 milliseconds is one second.
                 } catch(InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }

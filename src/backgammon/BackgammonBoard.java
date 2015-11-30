@@ -785,7 +785,7 @@ public class BackgammonBoard
         if (!board[start].isEmpty()&& board[start].getLast()==currentPlayer.getId())
         {
             int i=0,num=0;
-            while (i-1>0&&board[start].get(board[start].size()-1-i)==currentPlayer.getId())
+            while (i<board[start].size()&&board[start].get(board[start].size()-1-i)==currentPlayer.getId())
             {                
                 ourCaptured+=1;
                 i++;
@@ -795,7 +795,7 @@ public class BackgammonBoard
         if (!board[end].isEmpty()&& board[end].getLast()==currentPlayer.getNextId())
         {
             int i=0,num=0;
-            while (i-1>0&&board[end].get(board[end].size()-1-i)==currentPlayer.getNextId())
+            while (i<board[end].size()&&board[end].get(board[end].size()-1-i)==currentPlayer.getNextId())
             {                
                 enemyCaptured+=1;
                 i++;

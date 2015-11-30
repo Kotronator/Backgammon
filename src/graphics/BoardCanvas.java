@@ -71,7 +71,7 @@ public class BoardCanvas extends java.awt.Canvas
         if (!boardToDraw.board[0].isEmpty()&& boardToDraw.board[0].getLast()==0)
         {
             int i=0,num=0;
-            while (i-1>0&&boardToDraw.board[0].get(boardToDraw.board[0].size()-1-i)==0)
+            while (i<boardToDraw.board[0].size()&&boardToDraw.board[0].get(boardToDraw.board[0].size()-1-i)==0)
             {                
                 num+=1;
                 i++;
@@ -84,7 +84,7 @@ public class BoardCanvas extends java.awt.Canvas
         if (!boardToDraw.board[25].isEmpty()&& boardToDraw.board[25].getLast()==1)
         {
             int i=0,num=0;
-            while (i-1>0&&boardToDraw.board[25].get(boardToDraw.board[25].size()-1-i)==1)
+            while (i<boardToDraw.board[25].size()&&boardToDraw.board[25].get(boardToDraw.board[25].size()-1-i)==1)
             {                
                 num+=1;
                 i++;
