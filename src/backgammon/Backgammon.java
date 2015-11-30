@@ -68,6 +68,7 @@ public class Backgammon {
                     }
                     //backgammon.doMove(pos0, roll.dice0);
                     //backgammon.doMove(pos1, roll.dice1);
+                    //
                     backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
                     window.repaint();
                     
