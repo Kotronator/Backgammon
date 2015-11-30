@@ -5,6 +5,7 @@
  */
 package graphics;
 
+import backgammon.AIPlayer;
 import backgammon.BackgammonBoard;
 import java.awt.Color;
 import java.awt.Font;
@@ -26,21 +27,29 @@ public class BoardCanvas extends java.awt.Canvas
     String boardImageFileName ="board.gif";
     String redPieceImageFileName = "red_piece.gif";
     String greenPieceImageFileName = "green_piece.gif";
-    
+    String diceFileName="d";
     ImageIcon boardIcon=null;
     ImageIcon redPiece = null;
     ImageIcon greenPiece = null;
     
     Image[] pieceImages= new Image[2];
+    Image[] dices= new Image[6];
     
     BackgammonBoard boardToDraw;
-    BoardCanvas(BackgammonBoard board)
+    private AIPlayer.Roll roll;
+    BoardCanvas(BackgammonBoard board, AIPlayer.Roll roll)
     {     
         boardToDraw=board;
+        this.roll=roll;
         try {
             boardIcon = new ImageIcon(ImageIO.read(backgammon.FileLoader.loadFile(boardImageFileName)));
             redPiece = new ImageIcon(ImageIO.read(backgammon.FileLoader.loadFile(redPieceImageFileName)));
             greenPiece = new ImageIcon(ImageIO.read(backgammon.FileLoader.loadFile(greenPieceImageFileName)));
+            for (int i = 0; i <= 5; i++)
+            {
+                
+                dices[i] = (new ImageIcon(ImageIO.read(backgammon.FileLoader.loadFile(diceFileName+(i+1)+".gif")))).getImage();
+            }
         } catch (IOException ex) {
             Logger.getLogger(BoardCanvas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,6 +63,7 @@ public class BoardCanvas extends java.awt.Canvas
     public void paint(Graphics grphcs) {
         
         grphcs.drawImage(boardIcon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
+        
         //grphcs.setColor(Color.red);
         grphcs.setFont(new Font(Font.SERIF, Font.BOLD, 30));
         //grphcs.drawString("TO SCORE DEN METRAEI", 200, 200);
@@ -89,7 +99,7 @@ public class BoardCanvas extends java.awt.Canvas
             
             if(boardToDraw.getBoard()[i].isEmpty())
             {
-                continue;
+                //continue;
             }
             int x=40,y=30, direction=1, z=i;
             if(i<7)
@@ -118,7 +128,11 @@ public class BoardCanvas extends java.awt.Canvas
                 direction=-1;
                 z=i-12;
             }
-            
+            grphcs.setColor(Color.BLACK);
+            if(i<=12)
+                grphcs.drawString(i+"", x+(z-1)*55*direction+15,  25);
+            else
+                grphcs.drawString(i+"", x+(z-1)*55*direction+10,  y+75);
             int numOfPiecesInColum=boardToDraw.getBoard()[i].size();
                 int j=0;
                 for (Iterator<Integer> it = boardToDraw.getBoard()[i].iterator(); it.hasNext();)
@@ -132,23 +146,11 @@ public class BoardCanvas extends java.awt.Canvas
             
             
         }
+        //System.out.println(roll.dice0);
+       grphcs.drawImage(dices[roll.dice0-1], 180, 270, 40, 40, this);
+       grphcs.drawImage(dices[roll.dice1-1], 180+400, 270, 40, 40, this);
         
-        //grphcs.drawImage(a.getImage(), 0, 0, this);
         
-//        grphcs.drawImage(redPiece.getImage(), 40, 30, 50, 50, this);
-//        for (int i = 1; i <= 4; i++) {
-//            grphcs.drawImage(greenPiece.getImage(), 40, 30+i*50, 50, 50, this);
-//        }
-//        for (int i = 1; i <= 3; i++) {
-//        grphcs.drawImage(greenPiece.getImage(), 40, 30+25+i*50, 50, 50, this);
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            
-//            grphcs.drawImage(greenPiece.getImage(), 40+55*i, 30, 50, 50, this);
-//        }
-        
-        //grphcs.drawRect(5, 5, 5, 5);
-        //super.paint(grphcs); //To change body of generated methods, choose Tools | Templates.
     }
     
     

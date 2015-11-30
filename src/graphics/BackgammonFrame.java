@@ -5,6 +5,7 @@
  */
 package graphics;
 
+import backgammon.AIPlayer;
 import backgammon.BackgammonBoard;
 
 /**
@@ -19,8 +20,10 @@ public class BackgammonFrame extends javax.swing.JFrame
      */
     BackgammonBoard boardToDraw;
     String frameTitle;
-    public BackgammonFrame(BackgammonBoard board, String title)
+     AIPlayer.Roll roll;
+    public BackgammonFrame(BackgammonBoard board, AIPlayer.Roll roll, String title)
     {
+        this.roll=roll;
         frameTitle=title;
         boardToDraw=board;
         this.setTitle(title);
@@ -36,6 +39,7 @@ public class BackgammonFrame extends javax.swing.JFrame
         super.repaint(); //To change body of generated methods, choose Tools | Templates.
         canvas1.repaint();
         canvas2.repaint();
+        jLabel2.setText(boardToDraw.currentPlayer.name);
     }
     
     
@@ -51,11 +55,13 @@ public class BackgammonFrame extends javax.swing.JFrame
     {
 
         jPanel1 = new javax.swing.JPanel();
-        canvas1 = new BoardCanvas(boardToDraw);
+        canvas1 = new BoardCanvas(boardToDraw,roll);
         jPanel3 = new javax.swing.JPanel();
         canvas2 = new SideCanvas(boardToDraw);
  ;
         jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -105,15 +111,28 @@ public class BackgammonFrame extends javax.swing.JFrame
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
 
+        jLabel1.setText("Current Player:");
+        jLabel1.setToolTipText("");
+
+        jLabel2.setText(boardToDraw.currentPlayer.name);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 14, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)))
         );
 
         jMenu3.setText("File");
@@ -151,8 +170,10 @@ public class BackgammonFrame extends javax.swing.JFrame
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Canvas canvas1;
+    public java.awt.Canvas canvas1;
     private java.awt.Canvas canvas2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar2;

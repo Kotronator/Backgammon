@@ -191,10 +191,10 @@ public class AIPlayer
 
     
 
-    static class Roll
+    public static class Roll
     {
-        int dice0;
-        int dice1;
+        public int dice0;
+        public int dice1;
         double propability;
 
         public Roll(int dice0, int dice1)

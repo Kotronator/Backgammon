@@ -6,9 +6,15 @@
 package backgammon;
 
 import graphics.BackgammonFrame;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -20,33 +26,56 @@ public class Backgammon {
      * @param args the command line arguments
      */
     private static BackgammonBoard backgammon;
-    
+    static Scanner sc= new Scanner(System.in);
     public static void main(String[] args) {
         PlayerController.addPlayer("Stelios");
         PlayerController.addPlayer("AI");
         // TODO code application logic here 
         backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
-        AIPlayer.maxDepth=2;
+        AIPlayer.maxDepth=1;
         Random r= new Random(System.currentTimeMillis());
-        BackgammonFrame window=new graphics.BackgammonFrame(backgammon,"tabli");
+        AIPlayer.Roll roll= new AIPlayer.Roll(r.nextInt(6)+1,r.nextInt(6)+1);
+        BackgammonFrame window=new graphics.BackgammonFrame(backgammon, roll,"tabli");
+        System.out.println(backgammon.isPlayerInBearOffPhase());
+        window.repaint();
         while (!backgammon.isTerminal())
         {
-            AIPlayer.Roll roll = new AIPlayer.Roll(r.nextInt(6)+1,r.nextInt(6)+1);
+            if(backgammon.currentPlayer.getId()==0)
+            {
+               
+                if(roll.dice0==roll.dice1){
+                    
+                    for (int i = 0; i < 4; i++)
+                    {
+                        int pos0 = askPosition(roll.dice0);
+                    }
+                }
+                else
+                {
+                    int pos0 = askPosition(roll.dice0);
+                    int pos1 = askPosition(roll.dice1);
+                }
+            }
+            
             Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
             backgammon.doMove(move);
+            window.repaint();
             try {
-                    Thread.sleep(50);                 //1000 milliseconds is one second.
+                    Thread.sleep(100);                 //1000 milliseconds is one second.
                 } catch(InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
-            window.repaint();
+            
+            roll.dice0=r.nextInt(6)+1;
+            roll.dice1=r.nextInt(6)+1;
+            
             
         }
-        window.repaint();
+        //window.repaint();
         int dice0=3, dice1=1;
         boolean showChildren = false;
-        AIPlayer.Roll roll = new AIPlayer.Roll(dice0,dice1);
+        //AIPlayer.Roll roll = new AIPlayer.Roll(dice0,dice1);
         float start= System.currentTimeMillis();
         //Move move=AIPlayer.miniMax(backgammon, AIPlayer.maxDepth, roll);
         float end= System.currentTimeMillis();
@@ -67,7 +96,7 @@ public class Backgammon {
                 } catch(InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
-                new graphics.BackgammonFrame(childrenList1.board,i+
+                new graphics.BackgammonFrame(childrenList1.board,roll,i+
                          " dice:"+childrenList1.moveOrder.get(0).dice+"from"+childrenList1.moveOrder.get(0).position+" & "+
                          " dice:"+childrenList1.moveOrder.get(1).dice+"from"+childrenList1.moveOrder.get(1).position+"v:"+childrenList1.board.evaluate());
                 i++;
@@ -85,6 +114,13 @@ public class Backgammon {
        
         
  
+    }
+    
+    public static int askPosition(int dice)
+    {
+        System.out.print("Type position to play dice "+dice+":");
+        int pos=sc.nextInt();
+        return pos;
     }
     
     

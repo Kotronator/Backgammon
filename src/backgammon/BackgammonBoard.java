@@ -564,8 +564,15 @@ public class BackgammonBoard
             
         }else// den eimai se fash mazevw --not bear phase
         {
-            if((position<=6&&currentPlayer.getId()==1&&dice==position)||(position>=19&&currentPlayer.getId()==0 && dice==6-(position % 19)))//ama paw na pazepsw den epitrpetai
+            if((position<=6&&currentPlayer.getId()==1&&dice>=position)||(position>=19&&currentPlayer.getId()==0 && dice>=6-(position % 19)))//ama paw na pazepsw den epitrpetai
                 return false;//kinhsh mazematos
+//            if(currentPlayer.getId()==1)
+//            {
+//                if (position>=1&&position<=6&&getBearOffDistanceOfPosition(position)<=dice)
+//                {
+//                    return false;
+//                }
+//            }
             if(hasPlayerCapturedPiece())//exw piasmeno
             {
                 if(position==25*currentPlayer.getId())// ama eimai 0 pazw apo 0
@@ -593,7 +600,7 @@ public class BackgammonBoard
         }
     }
     
-    private boolean isPlayerInBearOffPhase()
+    public boolean isPlayerInBearOffPhase()
     {
         int startPosition=1, finishPosition=18;
         if(hasPlayerCapturedPiece())
@@ -607,7 +614,7 @@ public class BackgammonBoard
             finishPosition=24;
         }
         
-        for (int i = startPosition; i < finishPosition; i++)
+        for (int i = startPosition; i <= finishPosition; i++)
         {
             if(board[i].isEmpty())
                 continue;
