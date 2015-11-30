@@ -22,16 +22,10 @@ public class AIPlayer
         Move v=null;
         if(board.currentPlayer.name.equals("AI"))
         {
-            //System.out.println("Minimax Entered Max");
             HashSet<BackgammonChild> childs;
             childs=board.generateChildren(roll.dice0, roll.dice1);
             v= new Move(null, Double.NEGATIVE_INFINITY);
             for (BackgammonChild child : childs) {
-                
-                //p.second=child.second;
-                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
-                //child.moveOrder.add(new SingleMove(roll.dice0, roll.dice1));
-                //v=maxMove(v, dice(child.board, depth-1,false));
                 Move diceMove=dice(child.board, depth-1, false);
                  if (greaterMove(diceMove,v))
                 {
@@ -46,10 +40,6 @@ public class AIPlayer
             childs=board.generateChildren(roll.dice0, roll.dice1);
             v= new Move(null, new Double(Double.POSITIVE_INFINITY));
             for (BackgammonChild child : childs) {
-                
-                //p.second=child.second;
-                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
-                //v=minMove(v, dice(child, depth,true));
                 Move diceMove=dice(child.board, depth-1, true);
                  if (lessMove(diceMove,v))
                 {
@@ -59,7 +49,6 @@ public class AIPlayer
             }
             
         }
-        //System.out.println("Minimax Finished");
         return v;
     }
     static int k=0;
@@ -67,13 +56,13 @@ public class AIPlayer
     {  
        
         if (depth==0)
-        { //System.out.println("EDW EDW"+(k++));
+        { 
             return new Move(null,board.evaluate());
             
         }
        
          board.currentPlayer=PlayerController.getPlayerWithId(board.currentPlayer.getNextId());
-        Move v=null;// new Move(null, 0);
+        Move v=null;
         double sum=0;
         
         for (int i = 1; i <= 6; i++)
@@ -81,7 +70,7 @@ public class AIPlayer
                 if(i>=j)
                 {
                     Roll roll = new Roll(i, j);
-                    if(maximaze)//child.board.currentPlayer.getId()==PlayerController.getPlayerWithName("AI").getId())
+                    if(maximaze)
                     {
                         sum+=max(board,  depth,  roll).value*roll.propability;
                     }
@@ -99,7 +88,7 @@ public class AIPlayer
     
     public static Move min(BackgammonBoard board, int depth, Roll roll)
     {
-        if(depth==0)//||board.isTerminal())
+        if(depth==0)
         {
             throw new UnsupportedOperationException("Lathos sto min d=0");
             
