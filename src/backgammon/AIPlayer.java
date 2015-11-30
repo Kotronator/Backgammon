@@ -88,14 +88,11 @@ public class AIPlayer
                     else
                     {
                         Move tmp=min(board,  depth,  roll);
-                        //System.out.println("v:"+tmp.value+" p="+roll.propability);
+                       
                         sum+=tmp.value*roll.propability;
                     }
                 }
-//        if(depth!=maxDepth)
-//        {
-//            v.moveOrder=child.board.lastMovePlayed.moveOrder;
-//        }
+
         
         return new Move(null, sum);
     }
@@ -105,60 +102,47 @@ public class AIPlayer
         if(depth==0)//||board.isTerminal())
         {
             throw new UnsupportedOperationException("Lathos sto min d=0");
-            //return new Move (board.lastMovePlayed.moveOrder,board.evaluate());
+            
         }
         Move v=null;
-        //if(board.currentPlayer.getId()==PlayerController.getPlayerWithName("AI").getId())
-        //{
+        
             HashSet<BackgammonChild> childs;
             childs=board.generateChildren(roll.dice0, roll.dice1);
             v= new Move(null,(Double.POSITIVE_INFINITY));
             for (BackgammonChild child : childs) {
                 
-                //p.second=child.second;
-                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
+                
                 v=minMove(v, dice(child.board, depth-1,true));
                
 
             }
-        //}
-//        if(depth!=maxDepth)
-//        {
-//            v.moveOrder=board.lastMovePlayed.moveOrder;
-//        }
+        
         
         return v;
     }
     
     private static Move max(BackgammonBoard board, int depth, Roll roll)
     {
-         if(depth==0)//||board.isTerminal())
+         if(depth==0)
          {
              throw new UnsupportedOperationException("Lathos sto max d=0");
-//            System.out.print(board.lastMovePlayed.moveOrder.size());
-//            return new Move (board.lastMovePlayed.moveOrder,board.evaluate());
+
          }
          board.currentPlayer=PlayerController.getPlayerWithId(board.currentPlayer.getNextId());
        Move v=null;
-        //if(board.currentPlayer.getId()==PlayerController.getPlayerWithName("AI").getId())
+        
         {
             HashSet<BackgammonChild> childs;
             childs=board.generateChildren(roll.dice0, roll.dice1);
             v= new Move(null, Double.NEGATIVE_INFINITY);
             for (BackgammonChild child : childs) {
                 
-                //p.second=child.second;
-                //child.board.currentPlayer=PlayerController.getPlayerWithId(child.board.currentPlayer.getNextId());
+                
                 v=maxMove(v, dice(child.board, depth-1,false));
 
             }
         }
-//        if(depth!=maxDepth)
-//        {
-//            v.moveOrder=board.lastMovePlayed.moveOrder;
-//        }
-//        
-        //System.out.println("Exited from max with Dices"+roll.dice0+":"+roll.dice1);
+    
         return v;
     }
     

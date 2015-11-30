@@ -503,11 +503,10 @@ public class BackgammonBoard
                 {
                     if (type==PORTES)
                     {
-                        //debug
-                       
+                                               
                         if ((!board[targetPosition].isEmpty())&&board[targetPosition].getLast()==currentPlayer.getNextId())//trwme pouli
                         {
-                            //System.out.println("to faga");
+                            
                             int piece=board[targetPosition].removeLast();
                             board[currentPlayer.getNextId()*25].addLast(piece);
                         }
@@ -535,7 +534,7 @@ public class BackgammonBoard
         
         if(isPlayerInBearOffPhase())
         {
-            if(dice==getBearOffDistanceOfPosition(position))//(currentPlayer.getId()==1&&dice==position)||(currentPlayer.getId()==0 && dice==6-(position % 19)))
+            if(dice==getBearOffDistanceOfPosition(position))
                 return true;
             else if (dice>getBearOffDistanceOfPosition(position))
             {
@@ -566,13 +565,7 @@ public class BackgammonBoard
         {
             if((position<=6&&currentPlayer.getId()==1&&dice>=position)||(position>=19&&currentPlayer.getId()==0 && dice>=6-(position % 19)))//ama paw na pazepsw den epitrpetai
                 return false;//kinhsh mazematos
-//            if(currentPlayer.getId()==1)
-//            {
-//                if (position>=1&&position<=6&&getBearOffDistanceOfPosition(position)<=dice)
-//                {
-//                    return false;
-//                }
-//            }
+           
             if(hasPlayerCapturedPiece())//exw piasmeno
             {
                 if(position==25*currentPlayer.getId())// ama eimai 0 pazw apo 0
@@ -712,40 +705,30 @@ public class BackgammonBoard
         return position;//position+(dice*(currentPlayer.getId()*-2+1));
     }
 
-//    @Override
-//    public String toString()
-//    {
-//        return super
-//    }
 
     private int getNextPiece(int i)
     {
-//        if (hasPiece(i))
-//        {
-//            return i;
-//        }
-//        
-        //else
-            if (currentPlayer.getId()==0)
+
+        if (currentPlayer.getId()==0)
+        {
+            for (int j = i+1; j < 25; j++)
             {
-                for (int j = i+1; j < 25; j++)
+                if (hasPiece(j))
                 {
-                    if (hasPiece(j))
-                    {
-                        return j;
-                    }
+                    return j;
                 }
             }
-            else
+        }
+        else
+        {
+           for (int j =i-1 ; j > 0; j--)
             {
-               for (int j =i-1 ; j > 0; j--)
+                if (hasPiece(j))
                 {
-                    if (hasPiece(j))
-                    {
-                        return j;
-                    }
-                } 
-            }
+                    return j;
+                }
+            } 
+        }
         return currentPlayer.getNextId()*25+1*(currentPlayer.getId()*(-2)+1);
     }
 
@@ -781,8 +764,6 @@ public class BackgammonBoard
 
     public double evaluate()
     {
-        //Player temp=currentPlayer;
-        //currentPlayer=PlayerController.getPlayerWithId(1);
         int ourDoor=0,enemyDoor=0,ourCaptured=0,enemyCaptured=0,ourCollected=0,enemyCollected = 0;
         int ourpieceDistance=0, enemyPieceDistance=0;
         for (int i = 1; i < 25; i++)
@@ -914,13 +895,13 @@ public class BackgammonBoard
             
         }
         
-        // currentPlayer=temp;
+        
         if (currentPlayer.getId()==0)
         {
             return -(ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected-ourpieceDistance*1.5);
         }
          else return ourDoor-enemyDoor+enemyCaptured-ourCaptured+ourCollected-enemyCollected-ourpieceDistance*1.5;
-        //return (ourDoor-enemyDoor-ourCaptured+enemyCaptured);
+        
     }
 
     private void doorsSetup()

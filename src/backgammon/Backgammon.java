@@ -28,13 +28,18 @@ public class Backgammon {
     private static BackgammonBoard backgammon;
     static Scanner sc= new Scanner(System.in);
     public static void main(String[] args) {
-        
-        PlayerController.addPlayer("Stelios");
+        int maxDepth=1;
+        boolean aiVSai=true;
+        if(args.length>0)
+            maxDepth=Integer.parseInt(args[0]);
+        if(args.length==2&&args[1].equals("true"))
+            aiVSai=true;
+        PlayerController.addPlayer("Human Player");
         PlayerController.addPlayer("AI");
         // TODO code application logic here 
         backgammon= new BackgammonBoard(PlayerController.getPlayerWithId(0));
         backgammon.initialiseBoard();
-        AIPlayer.maxDepth=1;
+        AIPlayer.maxDepth=maxDepth;
         Random r= new Random(System.currentTimeMillis());
         AIPlayer.Roll roll= new AIPlayer.Roll(r.nextInt(6)+1,r.nextInt(6)+1);
         BackgammonFrame window=new graphics.BackgammonFrame(backgammon, roll,"tabli");
@@ -42,151 +47,154 @@ public class Backgammon {
         window.repaint();
         while (!backgammon.isTerminal())
         {
-            if(backgammon.currentPlayer.getId()==0)
+            if(!aiVSai)
             {
-               
-                if(roll.dice0==roll.dice1){
-                    
-                     boolean valid=false;
-                    
-                    while (!valid)
-                    {  
-                        
-                        
-                        BackgammonBoard tmp= backgammon.getCopy();
-                        
-                        HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
-                        HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
-                        for (BackgammonChild x : set1)
-                        {
-                            set.add(x.board);
+                if(backgammon.currentPlayer.getId()==0)
+                {
+
+                    if(roll.dice0==roll.dice1){
+
+                         boolean valid=false;
+
+                        while (!valid)
+                        {  
+
+
+                            BackgammonBoard tmp= backgammon.getCopy();
+
+                            HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
+                            HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
+                            for (BackgammonChild x : set1)
+                            {
+                                set.add(x.board);
+                            }
+
+                            if(set.size()==0)
+                            {
+                                valid=true;
+                                backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
+                            }
+
+                            int[] pos = new int[4];
+                            for (int i = 0; i < 4; i++)
+                            {
+                                pos[i] = askPosition(roll.dice0);
+                                tmp.doMove(pos[i], roll.dice0);
+                                BackgammonFrame.boardToDraw=tmp;
+                                window.repaint();
+
+                                 try {
+                                    Thread.sleep(500);                //1000 milliseconds is one second.
+                                } catch(InterruptedException ex) {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+        //                    
+
+                            if (set.contains(tmp))
+                            {
+                                valid=true;
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    backgammon.doMove(pos[i],roll.dice0);
+                                }
+                                backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
+
+                            }else
+                            {
+                                valid=false;
+
+                            }
                         }
-                        
-                        if(set.size()==0)
-                        {
-                            valid=true;
-                            backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
-                        }
-                        
-                        int[] pos = new int[4];
-                        for (int i = 0; i < 4; i++)
-                        {
-                            pos[i] = askPosition(roll.dice0);
-                            tmp.doMove(pos[i], roll.dice0);
+                         try {
+                                    Thread.sleep(500);                //1000 milliseconds is one second.
+                                } catch(InterruptedException ex) {
+                                    Thread.currentThread().interrupt();
+                                }
+                        BackgammonFrame.boardToDraw=backgammon;
+                        window.repaint();
+
+                    }
+                    else
+                    {
+                        boolean valid=false;
+
+                        while (!valid)
+                        {                        
+
+
+                            HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
+                            HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
+
+                            for (BackgammonChild x : set1)
+                            {
+                                set.add(x.board);
+                            }
+                            if(set.size()==0)
+                            {
+                                valid=true;
+                                backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
+                            }
+
+                            BackgammonBoard tmp= backgammon.getCopy();
+                            int dice0=askDice();
+
+                            int pos0 = askPosition(dice0);
+                            tmp.doMove(pos0, dice0);
+                            BackgammonFrame.boardToDraw=tmp;
+                            window.repaint();
+                            int dice1=askDice();
+
+                            int pos1 = askPosition(dice1);
+                            tmp.doMove(pos1, dice1);
                             BackgammonFrame.boardToDraw=tmp;
                             window.repaint();
 
                              try {
-                                Thread.sleep(500);                //1000 milliseconds is one second.
+                                Thread.sleep(400);                //1000 milliseconds is one second.
                             } catch(InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                             }
-                        }
-    //                    
-                       
-                        if (set.contains(tmp))
-                        {
-                            valid=true;
-                            for (int i = 0; i < 4; i++)
+
+
+
+                            if (set.contains(tmp))
                             {
-                                backgammon.doMove(pos[i],roll.dice0);
+                                valid=true;
+                                backgammon.doMove(pos0, dice0);
+                                backgammon.doMove(pos1, dice1);
+                                backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
+
+                            }else
+                            {
+                                valid=false;
+
                             }
-                            backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
-                            System.out.println("\nEkanes thn Tuxh sou");
-                        }else
-                        {
-                            valid=false;
-                            System.out.println("\nTi pas na kaneis");
-                        }
-                    }
-                     try {
-                                Thread.sleep(500);                //1000 milliseconds is one second.
+
+
+                             try {
+                                Thread.sleep(400);                //1000 milliseconds is one second.
                             } catch(InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                             }
-                    BackgammonFrame.boardToDraw=backgammon;
-                    window.repaint();
-                   
-                }
-                else
-                {
-                    boolean valid=false;
-                    
-                    while (!valid)
-                    {                        
-                        
-                    
-                        HashSet<BackgammonChild> set1=backgammon.generateChildren(roll.dice0, roll.dice1);
-                        HashSet<BackgammonBoard> set= new HashSet<BackgammonBoard>();
-                        
-                        for (BackgammonChild x : set1)
-                        {
-                            set.add(x.board);
-                        }
-                        if(set.size()==0)
-                        {
-                            valid=true;
-                            backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
-                        }
-                        
-                        BackgammonBoard tmp= backgammon.getCopy();
-                        int dice0=askDice();
+                            BackgammonFrame.boardToDraw=backgammon;
+                            try {
+                                Thread.sleep(400);                //1000 milliseconds is one second.
+                            } catch(InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                            }
 
-                        int pos0 = askPosition(dice0);
-                        tmp.doMove(pos0, dice0);
-                        BackgammonFrame.boardToDraw=tmp;
-                        window.repaint();
-                        int dice1=askDice();
-                        
-                        int pos1 = askPosition(dice1);
-                        tmp.doMove(pos1, dice1);
-                        BackgammonFrame.boardToDraw=tmp;
-                        window.repaint();
 
-                         try {
-                            Thread.sleep(400);                //1000 milliseconds is one second.
-                        } catch(InterruptedException ex) {
-                            Thread.currentThread().interrupt();
+                            window.repaint();
                         }
-                        
-                        
-                        
-                        if (set.contains(tmp))
-                        {
-                            valid=true;
-                            backgammon.doMove(pos0, dice0);
-                            backgammon.doMove(pos1, dice1);
-                            backgammon.currentPlayer=PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId());
-                            System.out.println("\nEkanes thn Tuxh sou");
-                        }else
-                        {
-                            valid=false;
-                            System.out.println("\nTi pas na kaneis");
-                        }
-                        
-                        
-                         try {
-                            Thread.sleep(400);                //1000 milliseconds is one second.
-                        } catch(InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                        BackgammonFrame.boardToDraw=backgammon;
-                        try {
-                            Thread.sleep(400);                //1000 milliseconds is one second.
-                        } catch(InterruptedException ex) {
-                            Thread.currentThread().interrupt();
-                        }
-                        
-                        
-                        window.repaint();
                     }
                 }
+
+                roll.dice0=r.nextInt(6)+1;
+                roll.dice1=r.nextInt(6)+1;
             }
-            
-            roll.dice0=r.nextInt(6)+1;
-            roll.dice1=r.nextInt(6)+1;
             try {
-                    Thread.sleep(500);                //1000 milliseconds is one second.
+                    Thread.sleep(300);                //1000 milliseconds is one second.
                 } catch(InterruptedException ex) {
                     Thread.currentThread().interrupt();
                 }
@@ -235,7 +243,7 @@ public class Backgammon {
                
             }
         }
-        System.out.println("Afta einai");
+        System.out.println("The winner is:"+PlayerController.getPlayerWithId(backgammon.currentPlayer.getNextId()).name);
 
     }
     
